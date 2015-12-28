@@ -4,7 +4,7 @@ A Node.js SharePoint Client.
 
 # Usage Example
 ```javascript
-var sharepoint = require('sharepoint')({
+var sharepoint = require('sharepointconnector')({
   username : 'someusername',
   password : 'somepassword',
   // Authentication type - current valid values: ntlm, basic, online
@@ -29,7 +29,7 @@ sharepoint.login(function(err){
 ##Parameters
 When initialising Sharepoint, there are a number of optional params which can be specified at init. Here are their defaults & descriptions
 ```javascript
-var sharepoint = require('sharepoint')({
+var sharepoint = require('sharepointconnector')({
   username : 'someusername',
   password : 'somepassword',
   // Authentication type - current valid values: ntlm, basic, online, onlinesaml
