@@ -1,6 +1,6 @@
 {
   "name": "sharepointconnector",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Sharepoint library with support for multiple authentication strategies, stream handling, getByTiltle",
   "main": "sharepointconnector.js",
   "scripts": {
