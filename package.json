@@ -1,0 +1,27 @@
+{
+  "name": "sharepointConnector",
+  "version": "1.0.0",
+  "description": "Sharepoint library with support for multiple authentication strategies, stream handling, getByTiltle",
+  "main": "sharepoint.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "author": "veera raghava santhosh kumar reddy",
+  "license": "MIT",
+  "dependencies": {
+    "agentkeepalive": ">=1.2.0",
+    "async": "~0.2.9",
+    "dotty": "0.0.2",
+    "httpntlm": "^1.5.2",
+    "request": "^2.60.0",
+    "underscore": "^1.8.3",
+    "underscore-deep-extend": "0.0.5",
+    "xml2json": "^0.8.2"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-fh-build": "~0.0.8",
+    "mocha": "^2.2.4",
+    "nock": "^2.10.0"
+  }
+}
