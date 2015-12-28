@@ -1,15 +1,15 @@
 [![Build Status](https://travis-ci.org/cianclarke/sharepointer.svg)](https://travis-ci.org/cianclarke/sharepointer)
 
-A Node.js SharePoint Client.
+A Node.js SharePoint Client inherited from sharepointer (by cian clarke) .
 
 # Usage Example
 ```javascript
 var sharepoint = require('sharepointconnector')({
   username : 'someusername',
   password : 'somepassword',
-  // Authentication type - current valid values: ntlm, basic, online
+  // Authentication type - current valid values: ntlm, basic, online,onlinesaml
   type : 'ntlm',
-  url : 'https://someSharepointHostname.com'
+  url : 'https://sharepointHostname.com'
 });
 sharepoint.login(function(err){
   if (err){
@@ -34,7 +34,7 @@ var sharepoint = require('sharepointconnector')({
   password : 'somepassword',
   // Authentication type - current valid values: ntlm, basic, online, onlinesaml
   type : 'ntlm',
-  url : 'https://someSharepointHostname.com',
+  url : 'https://SharepointHostname.com',
   // All of the following params are optional:
   context : 'myCustomerSite', // Set to create resources outside of the base site context, `web`
   verbose : false, // Set to true to stop filtering responses, instead returning everything
@@ -81,7 +81,7 @@ You can now use any of the following functions to operate upon lists. Note that 
 Creating a result requires a title and a description.
 ```javascript
 sharepoint.lists.create({ title : 'My new list', description : 'Some list description' }, function(err, createRes){
-  // createRes will be the newly created list as an object { Id : 'someListGUID', title : 'My new list', ...}
+  // createRes will be the newly created list as an object { Id : 'list Name', title : 'My new list', ...}
 });
 ```  
 
@@ -90,13 +90,13 @@ List Read can take a string as the first param (assumes list Id), or a params ob
 The list operation already tells us quite a bit about that list, but this read call also returns Fields[] and Items[]. This is different to how the SharePoint API behaves, and is offered as a convenience.
 ```javascript
 // Get a list by ID - you can find this under the 'Id' property.
-sharepoint.lists.read('someListGUID', function(err, listReadResult){
-  // listReadResult will be an object { Id : 'someListGUID', Title : 'SomeListTitle', Items : [{}, {}], Fields : [{}, {}]  ... }
+sharepoint.lists.read('list name', function(err, listReadResult){
+  // listReadResult will be an object { Id : 'list name', Title : 'SomeListTitle', Items : [{}, {}], Fields : [{}, {}]  ... }
 });
 
 // Get a list by name
 sharepoint.lists.read({title : 'some list name' }, function(err, listReadResult){
-  // listReadResult will be an object { Id : 'someListGUID', Title : 'some list name', ... }
+  // listReadResult will be an object { Id : 'list name', Title : 'some list name', ... }
 });
 
 // You can also call a read() operation from an object returned from the list operation for convenience like this
@@ -111,12 +111,12 @@ sharepoint.lists.list(function(err, listRes){
 Updating requires an ID and a title. Optionally, you can just specify all this in one object.
 ```javascript
 // Update specifying the Id separately
-return sharepoint.lists.update('someListGuid', { Title : 'MyNewTitle' }, function(err, updateResult){
+return sharepoint.lists.update('list name', { Title : 'MyNewTitle' }, function(err, updateResult){
   // updateResult will be the object you passed in, but not the full list. To get the fully updated object, a subsequent read is needed.
 });
 
 // Updating specifying the Id in one param
-return sharepoint.lists.update({ Id : 'someListGuid', Title : 'MyNewTitle' }, function(err, updateResult){
+return sharepoint.lists.update({ Id : 'list name', Title : 'MyNewTitle' }, function(err, updateResult){
 });
 
 // You can also call a update() operation from an object returned from the list operation for convenience like this
@@ -149,13 +149,13 @@ Lists in sharepoint have a collection of items. These are usually another API ca
 ###ListItems List
 To retrieve the items contained within a list,
 ```javascript
-sharepoint.listItems.list('someListGUID', function(err, itemsUnderThisList){
+sharepoint.listItems.list('list Name', function(err, itemsUnderThisList){
 
 });
 ```
 Of course, we can also just perform a list read:
 ```javascript
-sharepoint.listItems.read('someListGUID', function(err, listReadResult){
+sharepoint.listItems.read('list Name', function(err, listReadResult){
   // we now have the items under listReadResult.Items
 });
 ```
@@ -164,13 +164,13 @@ sharepoint.listItems.read('someListGUID', function(err, listReadResult){
 We can create new ListItems within a list using the create function. The responsibility is on the user to ensure all required fields are included prior to creating a listItem, and no extraneous fields are included. SharePoint throws meaningful & useful errors (..for once) if you include incorrect fields here, so it's easy to debug.
 
 ```javascript
-sharepoint.listItems.create('someListGUID', { Title : 'My new list item', Remember: 'To include all fields' }, function(err, listCreateResult){
+sharepoint.listItems.create('list Name', { Title : 'My new list item', Remember: 'To include all fields' }, function(err, listCreateResult){
 
 });
 ```
 We can also just call .create() on the `Items` property of a list which we've read.
 ```javascript
-sharepoint.lists.read('someListGUID', function(err, listReadResult){
+sharepoint.lists.read('list Name', function(err, listReadResult){
   // Now that we've read a list, we can create an item under it by running:
   listReadResult.Items.create({ Title : 'My new item' }, function(){
 
@@ -182,13 +182,13 @@ sharepoint.lists.read('someListGUID', function(err, listReadResult){
 ###ListItem Read
 As part of reading a ListItem, we also retrieve it's File property, if any exists. This is helpful, because many lists include a file attachment (e.g. Document Libraries). If no file exists, this will simply be `undefined`.
 ```javascript
-sharepoint.listItems.read('someListGUID', 'someListItemId', function(err, singleListItem){
+sharepoint.listItems.read('list Name', 'someListItemId', function(err, singleListItem){
 
 });
 ```
 Of course, we can also just call .read() on a listItem, after we read it's containing list.
 ```javascript
-sharepoint.lists.read('someListGUID', function(err, listReadResult){
+sharepoint.lists.read('list Name', function(err, listReadResult){
   var anItemInThisList = listReadResult.Items[0];
   anItemInThisList.read(function(err, listItem){
 
@@ -199,13 +199,13 @@ sharepoint.lists.read('someListGUID', function(err, listReadResult){
 ###ListItem Delete
 To delete a ListItem, we can use the del() function.
 ```javascript
-sharepoint.listItems.del('someListGUID', 'someListItemId', function(err){
+sharepoint.listItems.del('list Name', 'someListItemId', function(err){
 
 });
 ```
 Of course, we can also just call .del() on a listItem, after we read it's containing list.
 ```javascript
-sharepoint.lists.read('someListGUID', function(err, listReadResult){
+sharepoint.lists.read('list Name', function(err, listReadResult){
   var anItemInThisList = listReadResult.Items[0];
   anItemInThisList.delete(function(err){
 

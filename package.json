@@ -1,14 +1,14 @@
 {
   "name": "sharepointconnector",
-  "version": "1.0.3",
-  "description": "Sharepoint library with support for multiple authentication strategies, stream handling, getByTiltle",
-  "main": "sharepointconnector.js",
-  "scripts": {
-    "test": "grunt test"
-  },
+  "version": "1.0.6",
+  "description": "SharePoint library with support for multiple authentication strategies, file stream handling, get list details By Title & supports multiple user login ",
    "repository": {
     "type": "git",
     "url": "git://github.com/veeraRaghavSanthosh/sharepointConnector.git"
+  },
+  "main": "sharepointconnector.js",
+  "scripts": {
+    "test": "grunt test"
   },
   "author": "veera raghava santhosh kumar reddy<sanra46@gmail.com>",
   "license": "MIT",
