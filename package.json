@@ -1,6 +1,6 @@
 {
   "name": "sharepointconnector",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "SharePoint library with support for multiple authentication strategies, file stream handling, get list details By Title & supports multiple user login ",
    "repository": {
     "type": "git",
