@@ -2,7 +2,7 @@ var assert = require('assert'),
 _ = require('underscore');
 
 exports.it_should_login_and_retrieve_lists = function(done) {
-  var sharepoint = require('../../sharepoint.js')({
+  var sharepoint = require('../../sharepointconnector.js')({
     username: process.env.SP_USERNAME,
     password: process.env.SP_PASSWORD,
     type: process.env.SP_AUTH_TYPE,
@@ -10,7 +10,7 @@ exports.it_should_login_and_retrieve_lists = function(done) {
     context : process.env.SP_CONTEXT || 'web',
     strictSSL: false
   });
-  
+
   sharepoint.login(function(err) {
     assert.ok(!err, 'Error logging in' + JSON.stringify(err));
     sharepoint.lists.list(function(err, listRes) {
