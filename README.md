@@ -45,8 +45,8 @@ var sharepoint = require('sharepointconnector')({
   proxy : undefined, // set to string hostname of proxy if running through one
   strictSSL : true, // set to false if connecting to SP instance with self-signed cert
   federatedAuthUrl : 'http://mysamlloginservice.com', // only set for auth type 'onlinesaml', the URL of the SAML service which issues assertions to forward to the SharePoint login URL
-rtFa: <token>,// an optional parameter to set rtFa token value,
-FedAuth:<token> // an optional parameter to set FedAuth token value,  
+  rtFa: <token>,// an optional parameter to set rtFa token value,
+  FedAuth:<token> // an optional parameter to set FedAuth token value,  
 });
 ```
 
@@ -169,18 +169,18 @@ sharepoint.listItems.list('list Name', function(err, itemsUnderThisList,nextUrl)
   //nextUrl -- will provide the next page url and will be used to represent paginated data     
 
 });
-// below method can be used to read complete sharepoint list, irrespective of pagination (this method will takecare of the pagination and provides complete data set).
-sharepoint.listItems.listAll(function(err, listRes){
+// below method can be used to read complete sharepoint list, irrespective of the pagination SP value it provides the complete data set  (this method will takecare of the pagination internally and provides complete data set).
+sharepoint.listItems.listAll('list Name',function(err, listRes){
 
   });
 
-// will provide the current logged in user sharepoint details
+// will provide the current logged in user details
 sharepoint.listItems.currentuser("list name",function(err,response){
 
 });
-// will provide the binary stream data
+// will provide the binary stream content
 sharepoint.listItems.byteStream("floder Name", "filename",function(err,serviceReqObj){
-// for easy binary handling invoking the service and pipeing it to service response
+// for easy binary handling, invoked the service and piped it to response
     require('request').get(serviceReqObj).on('response', function(response) {
           response.pipe(res);
         });
@@ -245,7 +245,6 @@ sharepoint.listItems.del('list Name', 'someListItemId', function(err){
 
 });
 ```
-
 Of course, we can also just call .del() on a listItem, after we read it's containing list.
 
 ```javascript
