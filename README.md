@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/cianclarke/sharepointer.svg)](https://travis-ci.org/cianclarke/sharepointer) [![bitHound Score](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector/badges/score.svg)](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector)
+[![Build Status](https://travis-ci.org/cianclarke/sharepointer.svg)](https://travis-ci.org/cianclarke/sharepointer)
+[![bitHound Score](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector/badges/score.svg)](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector)
+
 
 A Node.js SharePoint Client inherited from sharepointer (by cian clarke) .
 
