@@ -77,6 +77,7 @@ As mentioned above, SharePoint is driven by lists. The base SharePoint API allow
 ### Lists List
 Confusing, I know. Bear with me. Lists all objects of type `list` in sharepoints (and remember, almost everything in Sharepoint is a list!).
 
+
 ```javascript
 sharepoint.lists.list(function(err, listRes,nextUrl){
   // listRes will be an array of lists [{ Id : '1a2b3c', ... }, { Id : '2b3c4d' }, { Id : '5d6e7f' }]
