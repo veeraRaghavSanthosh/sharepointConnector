@@ -13,7 +13,7 @@
   "author": "veera raghava santhosh kumar reddy<sanra46@gmail.com>",
   "keywords": [
     "sharepoint","sharepointconnector","sharepoint npm","SharePoint NPM", "Node.js wrapper for O365 REST API"
-  ]
+  ],
   "license": "MIT",
   "dependencies": {
     "agentkeepalive": ">=1.2.0",
