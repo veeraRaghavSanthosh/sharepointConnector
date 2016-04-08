@@ -1,7 +1,7 @@
 {
   "name": "sharepointconnector",
-  "version": "1.0.51",
-  "description": "SharePoint library which supports multiple authentication strategies, file streaming, fetching details by the list Title, Pagination, extendable record fetch limit, added support for query Operators and supports Concurrent user login support",
+  "version": "1.0.65",
+  "description": "SharePoint library which supports multiple authentication strategies, file streaming, fetching details by the list Title, Pagination, extendable record fetch limit, added support to query Operators and supports Concurrent user login",
    "repository": {
     "type": "git",
     "url": "git://github.com/veeraRaghavSanthosh/sharepointConnector.git"
@@ -12,12 +12,12 @@
   },
   "author": "veera raghava santhosh kumar reddy<sanra46@gmail.com>",
   "keywords": [
-    "sharepoint","sharepointconnector","sharepoint npm","SharePoint NPM", "Node.js wrapper for O365 REST API"
+    "sharepoint","sharepointconnector","sharepoint npm","SharePoint NPM", "Node.js wrapper for O365 REST API","O365"
   ],
   "license": "MIT",
   "dependencies": {
     "agentkeepalive": ">=1.2.0",
-    "async": "~0.2.9",
+    "async": "^0.2.9",
     "dotty": "0.0.2",
     "httpntlm": "^1.5.2",
     "request": "^2.60.0",
