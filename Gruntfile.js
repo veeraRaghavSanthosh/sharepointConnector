@@ -3,7 +3,34 @@ module.exports = function(grunt) {
   grunt.initConfig({
     jshint: {
       options: {
-        '-W079': true
+        '-W079': true,
+        "asi"           : false,
+        "camelcase"     : false,
+        "bitwise"       : false,
+        "unused"        : true,
+        "laxbreak"      : true,
+        "laxcomma"      : true,
+        "curly"         : false,
+        "eqeqeq"        : true,
+        "evil"          : true,
+        "forin"         : false,
+        "immed"         : true,
+        "latedef"       : false,
+        "newcap"        : false,
+        "noarg"         : true,
+        "noempty"       : true,
+        "nonew"         : true,
+        "plusplus"      : false,
+        "regexp"        : true,
+        "undef"         : false,
+        "strict"        : false,
+        "sub"           : true,
+        "trailing"      : true,
+        "node"          : true,
+        "maxerr"        : 100,
+        "es3"           : true,
+        "esnext"        : true,
+        "indent"        : 2
       },
       all: ['index.js', 'lib/**/*.js', 'test/**/**/*.js']
     }
