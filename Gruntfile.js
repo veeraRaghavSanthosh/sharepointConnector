@@ -2,6 +2,9 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     jshint: {
+      options: {
+        '-W079': true
+      },
       all: ['index.js', 'lib/**/*.js', 'test/**/**/*.js']
     }
     // ,
@@ -9,10 +12,11 @@ module.exports = function(grunt) {
     // integrate : ['./node_modules/mocha/bin/mocha -A -u exports --recursive -t 25000 ./test/integration ']
   });
 
-  grunt.loadNpmTasks('grunt-fh-build');
+  //grunt.loadNpmTasks('grunt-fh-build');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.registerTask('test', ['jshint','fh:unit']);
-  grunt.registerTask('integration', ['fh:integrate']);
-  grunt.registerTask('dist', ['test', 'fh:dist']);
+  //grunt.registerTask('test', ['jshint', 'fh:unit']);
+  grunt.registerTask('test', ['jshint']);
+  //grunt.registerTask('integration', ['fh:integrate']);
+  //grunt.registerTask('dist', ['test', 'fh:dist']);
   grunt.registerTask('default', 'test');
 };
