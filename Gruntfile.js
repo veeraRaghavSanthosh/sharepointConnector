@@ -11,8 +11,8 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-fh-build');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.registerTask('test', ['jshint']);
-//  grunt.registerTask('integration', ['fh:integrate']);
+  grunt.registerTask('test', ['jshint','fh:unit']);
+  grunt.registerTask('integration', ['fh:integrate']);
   grunt.registerTask('dist', ['test', 'fh:dist']);
   grunt.registerTask('default', 'test');
 };
