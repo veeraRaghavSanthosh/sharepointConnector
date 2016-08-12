@@ -1,6 +1,6 @@
 {
   "name": "sharepointconnector",
-  "version": "1.0.65",
+  "version": "1.0.66",
   "description": "SharePoint library which supports multiple authentication strategies, file streaming, fetching details by the list Title, Pagination, extendable record fetch limit, added support to query Operators and supports Concurrent user login",
    "repository": {
     "type": "git",
