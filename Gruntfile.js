@@ -5,7 +5,7 @@ module.exports = function(grunt) {
       options: {
         '-W079': true,
         "asi"           : false,
-        "camelcase"     : true,
+        "camelcase"     : false,
         "bitwise"       : false,
         "unused"        : true,
         "laxbreak"      : true,
