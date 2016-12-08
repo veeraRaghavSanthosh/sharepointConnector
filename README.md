@@ -187,6 +187,14 @@ sharepoint.listItems.byteStream("floder Name", "filename",function(err,serviceRe
         });
 });
 
+// below method can be used to read binary content based on the file path
+sharepoint.listItems.byteStreamByFilePath("file Path",function(err,serviceReqObj){
+// for ease of binary handling, invoked the service and piped it to response
+    require('request').get(serviceReqObj).on('response', function(response) {
+          response.pipe(res);
+        });
+});
+
 ```
 
 Of course, we can also just perform a list read:
