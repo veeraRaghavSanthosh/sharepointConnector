@@ -2,7 +2,116 @@
 [![bitHound Score](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector/badges/score.svg)](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector)
 
 
-A Node.js SharePoint Client inherited from sharepointer (by cian clarke) .
+# SharePoint Connector
+
+A Node.js SharePoint Client inherited from sharepointer (by cian clarke) that supports multiple authentication strategies, file streaming, fetching details by list title, pagination, extendable record fetch limit, and query operators with concurrent user login support.
+
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Usage Example](#usage-example)
+- [Parameters](#parameters)
+- [Additional Parameters for listing and reading Lists and ListItems](#additional-parameters-for-listing-and-reading-lists-and-listitems)
+- [A SharePoint Primer](#a-sharepoint-primer)
+- [Methods](#methods)
+  - [Lists](#lists)
+  - [List Items](#list-items)
+- [Why another SharePoint Client?](#why-another-sharepoint-client)
+- [Development & Testing](#development--testing)
+  - [Development Setup](#development-setup)
+  - [Running the Project](#running-the-project)
+  - [Testing](#testing)
+
+## Prerequisites
+
+- **Node.js**: Version 4.x or higher (recommended: 8.x or higher)
+- **npm**: Comes with Node.js installation
+- **SharePoint Environment**: 
+  - SharePoint 2013 (on-premise)
+  - SharePoint Online/Office 365
+  - SharePoint with SAML SSO
+
+## Installation
+
+### Using npm (Recommended)
+
+```bash
+npm install sharepointconnector
+```
+
+### Using yarn
+
+```bash
+yarn add sharepointconnector
+```
+
+### From Source
+
+```bash
+# Clone the repository
+git clone https://github.com/veeraRaghavSanthosh/sharepointConnector.git
+cd sharepointConnector
+
+# Install dependencies
+npm install
+```
+
+## Quick Start
+
+### Basic Usage
+
+```javascript
+const sharepoint = require('sharepointconnector')({
+  username: 'your-username',
+  password: 'your-password',
+  type: 'ntlm', // or 'basic', 'online', 'onlinesaml'
+  url: 'https://your-sharepoint-site.com'
+});
+
+// Login and start using
+sharepoint.login((err) => {
+  if (err) {
+    console.error('Login failed:', err);
+    return;
+  }
+  
+  console.log('Successfully connected to SharePoint!');
+  
+  // Your SharePoint operations here
+  sharepoint.lists.list((err, lists) => {
+    if (!err) {
+      console.log('Available lists:', lists.length);
+    }
+  });
+});
+```
+
+### Environment Variables Setup
+
+For security, it's recommended to use environment variables:
+
+```bash
+# Create a .env file or export these variables
+export SP_USERNAME="your-username"
+export SP_PASSWORD="your-password" 
+export SP_HOST="https://your-sharepoint-site.com"
+export SP_AUTH_TYPE="ntlm"  # or basic, online, onlinesaml
+export SP_CONTEXT="web"     # optional, defaults to 'web'
+```
+
+Then use in your code:
+
+```javascript
+const sharepoint = require('sharepointconnector')({
+  username: process.env.SP_USERNAME,
+  password: process.env.SP_PASSWORD,
+  type: process.env.SP_AUTH_TYPE,
+  url: process.env.SP_HOST,
+  context: process.env.SP_CONTEXT || 'web'
+});
+```
 
 # Usage Example
 
@@ -277,27 +386,199 @@ Yet another SharePoint Client. This one:
 
 - Accepts pull requests :-)
 
-# Tests
-Tests are written in Mocha. Unit tests simply require the integration tests, and `nock` the API they integrate with - thus reducing the amount of test code we need to write.
+# Development & Testing
 
-## Running Unit tests
-This includes jshint, and the mocha unit test suite.
+## Development Setup
 
+If you want to contribute or run the project in development mode:
+
+```bash
+# Clone the repository
+git clone https://github.com/veeraRaghavSanthosh/sharepointConnector.git
+cd sharepointConnector
+
+# Install dependencies
+npm install
+
+# Install development dependencies (if not already installed)
+npm install --only=dev
+
+# Install grunt CLI globally (required for running tests)
+npm install -g grunt-cli
 ```
-# install grunt globally
-npm install grunt-cli -g
-#run the tests
+
+## Running the Project
+
+### As a Library
+
+Once installed, you can use it in your Node.js projects:
+
+```javascript
+// In your Node.js application
+const sharepoint = require('sharepointconnector');
+
+// Initialize with your SharePoint configuration
+const spClient = sharepoint({
+  username: process.env.SP_USERNAME,
+  password: process.env.SP_PASSWORD,
+  type: process.env.SP_AUTH_TYPE,
+  url: process.env.SP_HOST
+});
+
+// Use the client
+spClient.login((err) => {
+  if (!err) {
+    console.log('Connected to SharePoint successfully!');
+    // Your SharePoint operations here
+  }
+});
+```
+
+### Example Applications
+
+Create a simple test file to verify your setup:
+
+```javascript
+// test-connection.js
+const sharepoint = require('sharepointconnector')({
+  username: 'your-username',
+  password: 'your-password',
+  type: 'ntlm', // Change based on your setup
+  url: 'https://your-sharepoint-site.com'
+});
+
+sharepoint.login((err) => {
+  if (err) {
+    console.error('Connection failed:', err);
+    return;
+  }
+  
+  console.log('✅ Successfully connected to SharePoint!');
+  
+  // List all available lists
+  sharepoint.lists.list((err, lists) => {
+    if (!err) {
+      console.log(`📋 Found ${lists.length} lists:`);
+      lists.forEach((list, index) => {
+        console.log(`  ${index + 1}. ${list.Title} (${list.ItemCount} items)`);
+      });
+    }
+  });
+});
+```
+
+Run it with:
+```bash
+node test-connection.js
+```
+
+## Testing
+
+### Test Overview
+
+Tests are written in Mocha and organized into two categories:
+- **Unit Tests**: Use `nock` to mock SharePoint API responses, allowing fast testing without a real SharePoint instance
+- **Integration Tests**: Test against a real SharePoint environment (requires valid credentials)
+
+### Prerequisites for Testing
+
+```bash
+# Install development dependencies
+npm install --only=dev
+
+# Install grunt CLI globally (if not already installed)
+npm install -g grunt-cli
+```
+
+### Running Unit Tests
+
+Unit tests include JSHint linting and the Mocha test suite with mocked API calls:
+
+```bash
+# Run linting and unit tests
+npm test
+
+# Or using grunt directly
 grunt test
+
+# Run only linting
+grunt jshint
 ```
 
-## Running Integration Tests
+### Running Integration Tests
 
+Integration tests require a real SharePoint environment and valid credentials.
+
+#### Setup Environment Variables
+
+```bash
+# Required environment variables
+export SP_USERNAME="your-sharepoint-username"
+export SP_PASSWORD="your-sharepoint-password"
+export SP_HOST="https://your-sharepoint-site.com"
+export SP_AUTH_TYPE="ntlm"  # Options: ntlm, basic, online, onlinesaml
+
+# Optional environment variables
+export SP_CONTEXT="web"  # Default context, usually 'web'
 ```
-#Setup environment variables with your SP creds:
-export SP_USERNAME=YOUR_USERNAME
-export SP_PASSWORD=YOUR_PASSWORD
-export SP_HOST=https://your_sp_hostname.com
-export SP_AUTH_TYPE=(ntlm|basic|online|onlinesaml)
-#Then run the tests:
+
+#### Alternative: Create a .env file
+
+```bash
+# Create .env file (not tracked in git)
+cat > .env << EOF
+SP_USERNAME=your-sharepoint-username
+SP_PASSWORD=your-sharepoint-password
+SP_HOST=https://your-sharepoint-site.com
+SP_AUTH_TYPE=ntlm
+SP_CONTEXT=web
+EOF
+
+# Load environment variables (in bash)
+source .env
+```
+
+#### Run Integration Tests
+
+```bash
+# Run integration tests (currently disabled in Gruntfile)
+# Note: Integration test task needs to be uncommented in Gruntfile.js
 grunt integration
+
+# Or run directly with mocha
+./node_modules/.bin/mocha test/integration/*.js --timeout 25000
 ```
+
+### Test Structure
+
+```
+test/
+├── fixtures/           # Mock data and API fixtures
+│   ├── apis.js
+│   ├── context.js
+│   └── ...
+├── integration/        # Tests against real SharePoint
+│   ├── test-list-create-delete.js
+│   ├── test-list-get.js
+│   └── test-list-items.js
+└── unit/              # Unit tests with mocked APIs
+    ├── test-list-create-delete.js
+    ├── test-list-get.js
+    └── test-list-items.js
+```
+
+### Authentication Types for Testing
+
+Choose the appropriate `SP_AUTH_TYPE` based on your SharePoint setup:
+
+- **`ntlm`**: For on-premise SharePoint with Windows authentication
+- **`basic`**: For basic HTTP authentication
+- **`online`**: For SharePoint Online/Office 365
+- **`onlinesaml`**: For SharePoint Online with SAML SSO
+
+### Troubleshooting Tests
+
+1. **Authentication Errors**: Verify your credentials and authentication type
+2. **Connection Timeouts**: Increase timeout values or check network connectivity
+3. **SSL Errors**: Add `strictSSL: false` to your SharePoint configuration for self-signed certificates
+4. **Proxy Issues**: Configure proxy settings if running behind a corporate firewall
