@@ -4,10 +4,14 @@ module.exports = function(grunt) {
     jshint: {
       options: {
         '-W079': true,
-        "asi"           : false,
+        "-W033"         : true,
+        "-W030"         : true,
+        "-W058"         : true,
+        "-W032"         : true,
+        "asi"           : true,
         "camelcase"     : false,
         "bitwise"       : false,
-        "unused"        : true,
+        "unused"        : false,
         "laxbreak"      : true,
         "laxcomma"      : true,
         "curly"         : false,
@@ -28,8 +32,7 @@ module.exports = function(grunt) {
         "trailing"      : true,
         "node"          : true,
         "maxerr"        : 100,
-        "es3"           : true,
-        "esnext"        : true,
+        "esversion"     : 8,
         "indent"        : 2
       },
       all: ['index.js', 'lib/**/*.js', 'test/**/**/*.js']
