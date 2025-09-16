@@ -1,0 +1,67 @@
+# Testing requirements for SharePoint Connector billing tests
+# These packages are needed to run the comprehensive billing test suite
+
+# Core testing framework (usually included with Python)
+# unittest - built-in Python testing framework
+
+# Enhanced testing capabilities
+pytest>=7.0.0              # Alternative testing framework with advanced features
+pytest-cov>=4.0.0          # Coverage reporting for pytest
+pytest-mock>=3.10.0        # Enhanced mocking capabilities
+
+# Test utilities and assertions
+mock>=4.0.0                 # Enhanced mocking (backport for older Python versions)
+parameterized>=0.8.1       # Parameterized test cases
+freezegun>=1.2.0           # Time mocking for date/time testing
+
+# Decimal and numeric testing
+decimal                     # Built-in, but explicit for clarity
+
+# Test reporting and output
+coverage>=6.0.0            # Code coverage analysis
+pytest-html>=3.1.0        # HTML test reports
+pytest-json-report>=1.5.0 # JSON test reports
+
+# Performance and load testing (optional)
+pytest-benchmark>=4.0.0   # Performance benchmarking
+locust>=2.0.0             # Load testing (for integration tests)
+
+# Mocking external services
+responses>=0.22.0         # HTTP request mocking
+fakeredis>=2.0.0          # Redis mocking (if used for caching)
+moto>=4.0.0               # AWS service mocking (if using AWS services)
+
+# Database testing (if applicable)
+pytest-postgresql>=4.0.0  # PostgreSQL testing utilities
+sqlalchemy>=1.4.0         # Database ORM (if used)
+
+# Async testing (if applicable)
+pytest-asyncio>=0.21.0    # Async test support
+
+# Documentation and type checking
+mypy>=1.0.0               # Type checking
+black>=22.0.0             # Code formatting
+flake8>=5.0.0             # Linting
+
+# Development utilities
+tox>=4.0.0                # Testing across multiple Python versions
+pre-commit>=2.20.0        # Git hooks for code quality
+
+# Optional: Enhanced assertion libraries
+assertpy>=1.1             # Fluent assertion library
+sure>=2.0.0               # Alternative assertion library
+
+# Optional: Property-based testing
+hypothesis>=6.0.0         # Property-based testing framework
+
+# Optional: Test data generation
+factory-boy>=3.2.0        # Test data factories
+faker>=18.0.0             # Fake data generation
+
+# Optional: API testing
+requests>=2.28.0          # HTTP client for API testing
+httpx>=0.24.0             # Async HTTP client
+
+# Optional: Configuration management
+python-decouple>=3.6      # Environment variable management
+pydantic>=1.10.0          # Data validation and settings management
