@@ -1,6 +1,6 @@
 {
   "name": "sharepointconnector",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "SharePoint library which supports multiple authentication strategies, file streaming, fetching details by the list Title, Pagination, extendable record fetch limit, added support to query Operators and supports Concurrent user login",
    "repository": {
     "type": "git",
@@ -16,19 +16,19 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "agentkeepalive": ">=1.2.0",
-    "async": "^0.2.9",
-    "dotty": "0.0.2",
-    "httpntlm": "^1.5.2",
-    "request": "^2.60.0",
-    "underscore": "^1.8.3",
-    "underscore-deep-extend": "^1.0.4",
-    "xml2js": "^0.4.16"
+    "agentkeepalive": "^4.5.0",
+    "async": "^3.2.4",
+    "dotty": "^0.1.2",
+    "httpntlm": "^1.7.7",
+    "axios": "^1.6.0",
+    "underscore": "^1.13.6",
+    "underscore-deep-extend": "^1.1.5",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
-    "grunt-contrib-jshint": "^1.0.0",
-    "grunt-fh-build": "^0.5.0",
-    "mocha": "^2.2.4",
-    "nock": "^2.10.0"
+    "grunt-contrib-jshint": "^3.2.0",
+    "grunt-fh-build": "^1.0.3",
+    "mocha": "^10.7.3",
+    "nock": "^13.5.4"
   }
 }

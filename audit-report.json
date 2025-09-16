@@ -1,0 +1,1715 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "agent-base": {
+      "name": "agent-base",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "semver"
+      ],
+      "effects": [
+        "https-proxy-agent"
+      ],
+      "range": "2.0.0 - 3.0.0",
+      "nodes": [
+        "node_modules/agent-base"
+      ],
+      "fixAvailable": {
+        "name": "grunt-fh-build",
+        "version": "1.0.3",
+        "isSemVerMajor": true
+      }
+    },
+    "ajv": {
+      "name": "ajv",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1097685,
+          "name": "ajv",
+          "dependency": "ajv",
+          "title": "Prototype Pollution in Ajv",
+          "url": "https://github.com/advisories/GHSA-v88g-cgmw-v5xw",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-915",
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 5.6,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L"
+          },
+          "range": "<6.12.3"
+        }
+      ],
+      "effects": [
+        "table"
+      ],
+      "range": "<6.12.3",
+      "nodes": [
+        "node_modules/table/node_modules/ajv"
+      ],
+      "fixAvailable": true
+    },
+    "archiver": {
+      "name": "archiver",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "glob",
+        "lodash",
+        "tar-stream",
+        "zip-stream"
+      ],
+      "effects": [
+        "grunt-contrib-compress"
+      ],
+      "range": "0.2.0 - 0.3.0 || 0.5.0-alpha - 0.21.0",
+      "nodes": [
+        "node_modules/archiver"
+      ],
+      "fixAvailable": true
+    },
+    "argparse": {
+      "name": "argparse",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        "underscore",
+        "underscore.string"
+      ],
+      "effects": [
+        "js-yaml"
+      ],
+      "range": "<=0.1.16",
+      "nodes": [
+        "node_modules/argparse"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "bl": {
+      "name": "bl",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1090072,
+          "name": "bl",
+          "dependency": "bl",
+          "title": "Remote Memory Exposure in bl",
+          "url": "https://github.com/advisories/GHSA-pp7h-53gx-mx7r",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-125",
+            "CWE-126"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:L"
+          },
+          "range": "<1.2.3"
+        }
+      ],
+      "effects": [
+        "tar-stream"
+      ],
+      "range": "<1.2.3",
+      "nodes": [
+        "node_modules/bl"
+      ],
+      "fixAvailable": true
+    },
+    "boom": {
+      "name": "boom",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "hoek"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/boom"
+      ],
+      "fixAvailable": true
+    },
+    "cli": {
+      "name": "cli",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1090893,
+          "name": "cli",
+          "dependency": "cli",
+          "title": "Arbitrary File Write in cli",
+          "url": "https://github.com/advisories/GHSA-6cpc-mj5c-m9rq",
+          "severity": "low",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<1.0.0"
+        }
+      ],
+      "effects": [
+        "jshint"
+      ],
+      "range": "<1.0.0",
+      "nodes": [
+        "node_modules/grunt-fh-build/node_modules/cli"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "debug": {
+      "name": "debug",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1094457,
+          "name": "debug",
+          "dependency": "debug",
+          "title": "debug Inefficient Regular Expression Complexity vulnerability",
+          "url": "https://github.com/advisories/GHSA-9vvw-cc9w-f27h",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<2.6.9"
+        },
+        {
+          "source": 1096795,
+          "name": "debug",
+          "dependency": "debug",
+          "title": "Regular Expression Denial of Service in debug",
+          "url": "https://github.com/advisories/GHSA-gxpj-cx7g-858c",
+          "severity": "low",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 3.7,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": "<2.6.9"
+        },
+        "ms"
+      ],
+      "effects": [
+        "mocha",
+        "nock"
+      ],
+      "range": "<=2.6.8",
+      "nodes": [
+        "node_modules/debug",
+        "node_modules/nock/node_modules/debug"
+      ],
+      "fixAvailable": {
+        "name": "mocha",
+        "version": "11.7.2",
+        "isSemVerMajor": true
+      }
+    },
+    "diff": {
+      "name": "diff",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1102333,
+          "name": "diff",
+          "dependency": "diff",
+          "title": "Regular Expression Denial of Service (ReDoS)",
+          "url": "https://github.com/advisories/GHSA-h6ch-v84p-w6p9",
+          "severity": "high",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<3.5.0"
+        }
+      ],
+      "effects": [
+        "mocha"
+      ],
+      "range": "<3.5.0",
+      "nodes": [
+        "node_modules/diff"
+      ],
+      "fixAvailable": {
+        "name": "mocha",
+        "version": "11.7.2",
+        "isSemVerMajor": true
+      }
+    },
+    "dotty": {
+      "name": "dotty",
+      "severity": "critical",
+      "isDirect": true,
+      "via": [
+        {
+          "source": 1089591,
+          "name": "dotty",
+          "dependency": "dotty",
+          "title": "Prototype Pollution in dotty",
+          "url": "https://github.com/advisories/GHSA-6g47-63mv-qpgh",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-843",
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 5.6,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L"
+          },
+          "range": "<0.1.2"
+        },
+        {
+          "source": 1093037,
+          "name": "dotty",
+          "dependency": "dotty",
+          "title": "Prototype pollution in dotty",
+          "url": "https://github.com/advisories/GHSA-f5c9-x9j6-87qp",
+          "severity": "critical",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 9.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<0.1.1"
+        }
+      ],
+      "effects": [],
+      "range": "<=0.1.1",
+      "nodes": [
+        "node_modules/dotty"
+      ],
+      "fixAvailable": {
+        "name": "dotty",
+        "version": "0.1.2",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint": {
+      "name": "eslint",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "shelljs"
+      ],
+      "effects": [
+        "plato"
+      ],
+      "range": "1.4.0 - 4.0.0-rc.0",
+      "nodes": [
+        "node_modules/eslint"
+      ],
+      "fixAvailable": true
+    },
+    "findup-sync": {
+      "name": "findup-sync",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "glob",
+        "lodash"
+      ],
+      "effects": [],
+      "range": "<=0.2.1",
+      "nodes": [
+        "node_modules/findup-sync",
+        "node_modules/grunt-fh-build/node_modules/findup-sync"
+      ],
+      "fixAvailable": true
+    },
+    "form-data": {
+      "name": "form-data",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1106509,
+          "name": "form-data",
+          "dependency": "form-data",
+          "title": "form-data uses unsafe random function in form-data for choosing boundary",
+          "url": "https://github.com/advisories/GHSA-fjxv-7rqg-78g4",
+          "severity": "critical",
+          "cwe": [
+            "CWE-330"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<2.5.4"
+        }
+      ],
+      "effects": [
+        "request"
+      ],
+      "range": "<2.5.4",
+      "nodes": [
+        "node_modules/form-data"
+      ],
+      "fixAvailable": false
+    },
+    "getobject": {
+      "name": "getobject",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1093420,
+          "name": "getobject",
+          "dependency": "getobject",
+          "title": "Prototype pollution in getobject",
+          "url": "https://github.com/advisories/GHSA-957j-59c2-j692",
+          "severity": "critical",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 9.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<1.0.0"
+        }
+      ],
+      "effects": [
+        "grunt",
+        "grunt-legacy-util"
+      ],
+      "range": "0.1.0",
+      "nodes": [
+        "node_modules/getobject"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "glob": {
+      "name": "glob",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [
+        "archiver",
+        "findup-sync",
+        "mocha"
+      ],
+      "range": "3.0.0 - 5.0.14",
+      "nodes": [
+        "node_modules/archiver/node_modules/glob",
+        "node_modules/findup-sync/node_modules/glob",
+        "node_modules/glob",
+        "node_modules/grunt-fh-build/node_modules/glob",
+        "node_modules/mocha/node_modules/glob"
+      ],
+      "fixAvailable": {
+        "name": "mocha",
+        "version": "11.7.2",
+        "isSemVerMajor": true
+      }
+    },
+    "growl": {
+      "name": "growl",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1088328,
+          "name": "growl",
+          "dependency": "growl",
+          "title": "Growl before 1.10.0 vulnerable to Command Injection",
+          "url": "https://github.com/advisories/GHSA-qh2h-chj9-jffq",
+          "severity": "critical",
+          "cwe": [
+            "CWE-78",
+            "CWE-94"
+          ],
+          "cvss": {
+            "score": 9.8,
+            "vectorString": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<1.10.0"
+        }
+      ],
+      "effects": [
+        "mocha"
+      ],
+      "range": "<1.10.0",
+      "nodes": [
+        "node_modules/growl"
+      ],
+      "fixAvailable": {
+        "name": "mocha",
+        "version": "11.7.2",
+        "isSemVerMajor": true
+      }
+    },
+    "grunt": {
+      "name": "grunt",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1089836,
+          "name": "grunt",
+          "dependency": "grunt",
+          "title": "Arbitrary Code Execution in grunt",
+          "url": "https://github.com/advisories/GHSA-m5pj-vjjf-4m3h",
+          "severity": "high",
+          "cwe": [
+            "CWE-1188"
+          ],
+          "cvss": {
+            "score": 7.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:U/C:H/I:H/A:H"
+          },
+          "range": "<1.3.0"
+        },
+        {
+          "source": 1091643,
+          "name": "grunt",
+          "dependency": "grunt",
+          "title": "Race Condition in Grunt",
+          "url": "https://github.com/advisories/GHSA-rm36-94g8-835r",
+          "severity": "high",
+          "cwe": [
+            "CWE-367"
+          ],
+          "cvss": {
+            "score": 7,
+            "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<1.5.3"
+        },
+        {
+          "source": 1091644,
+          "name": "grunt",
+          "dependency": "grunt",
+          "title": "Path Traversal in Grunt",
+          "url": "https://github.com/advisories/GHSA-j383-35pm-c5h4",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 5.5,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+          },
+          "range": "<1.5.2"
+        },
+        "findup-sync",
+        "getobject",
+        "glob",
+        "grunt-legacy-log",
+        "grunt-legacy-util",
+        "js-yaml",
+        "lodash",
+        "minimatch",
+        "underscore.string"
+      ],
+      "effects": [
+        "grunt-contrib-clean",
+        "grunt-contrib-compress",
+        "grunt-contrib-jshint",
+        "grunt-contrib-nodeunit"
+      ],
+      "range": "<=1.5.2",
+      "nodes": [
+        "node_modules/grunt"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "grunt-contrib-clean": {
+      "name": "grunt-contrib-clean",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "grunt"
+      ],
+      "effects": [],
+      "range": "0.4.0-a - 0.6.0",
+      "nodes": [
+        "node_modules/grunt-contrib-clean"
+      ],
+      "fixAvailable": true
+    },
+    "grunt-contrib-compress": {
+      "name": "grunt-contrib-compress",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "archiver",
+        "grunt"
+      ],
+      "effects": [],
+      "range": "0.4.0-rc7 - 1.2.0",
+      "nodes": [
+        "node_modules/grunt-contrib-compress"
+      ],
+      "fixAvailable": true
+    },
+    "grunt-contrib-jshint": {
+      "name": "grunt-contrib-jshint",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "grunt",
+        "jshint",
+        "jshint"
+      ],
+      "effects": [],
+      "range": "<=3.0.0",
+      "nodes": [
+        "node_modules/grunt-contrib-jshint",
+        "node_modules/grunt-fh-build/node_modules/grunt-contrib-jshint"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "grunt-contrib-nodeunit": {
+      "name": "grunt-contrib-nodeunit",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "grunt"
+      ],
+      "effects": [
+        "grunt-fh-build"
+      ],
+      "range": "0.1.2-rc5 - 0.4.1",
+      "nodes": [
+        "node_modules/grunt-contrib-nodeunit"
+      ],
+      "fixAvailable": {
+        "name": "grunt-fh-build",
+        "version": "1.0.3",
+        "isSemVerMajor": true
+      }
+    },
+    "grunt-env": {
+      "name": "grunt-env",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "lodash"
+      ],
+      "effects": [
+        "grunt-fh-build"
+      ],
+      "range": "0.4.1 - 0.4.4",
+      "nodes": [
+        "node_modules/grunt-env"
+      ],
+      "fixAvailable": {
+        "name": "grunt-fh-build",
+        "version": "1.0.3",
+        "isSemVerMajor": true
+      }
+    },
+    "grunt-fh-build": {
+      "name": "grunt-fh-build",
+      "severity": "critical",
+      "isDirect": true,
+      "via": [
+        "findup-sync",
+        "grunt-contrib-clean",
+        "grunt-contrib-compress",
+        "grunt-contrib-jshint",
+        "grunt-contrib-nodeunit",
+        "grunt-env",
+        "grunt-plato",
+        "lodash",
+        "nsp"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/grunt-fh-build"
+      ],
+      "fixAvailable": {
+        "name": "grunt-fh-build",
+        "version": "1.0.3",
+        "isSemVerMajor": true
+      }
+    },
+    "grunt-legacy-log": {
+      "name": "grunt-legacy-log",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "grunt-legacy-log-utils",
+        "lodash",
+        "underscore.string"
+      ],
+      "effects": [
+        "grunt"
+      ],
+      "range": "<=1.0.2",
+      "nodes": [
+        "node_modules/grunt-legacy-log"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "grunt-legacy-log-utils": {
+      "name": "grunt-legacy-log-utils",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "lodash",
+        "underscore.string"
+      ],
+      "effects": [
+        "grunt-legacy-log"
+      ],
+      "range": "<=1.0.0",
+      "nodes": [
+        "node_modules/grunt-legacy-log-utils"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "grunt-legacy-util": {
+      "name": "grunt-legacy-util",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        "getobject",
+        "lodash",
+        "underscore.string"
+      ],
+      "effects": [
+        "grunt"
+      ],
+      "range": "<=2.0.0",
+      "nodes": [
+        "node_modules/grunt-legacy-util"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "grunt-plato": {
+      "name": "grunt-plato",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "plato"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/grunt-plato"
+      ],
+      "fixAvailable": true
+    },
+    "hoek": {
+      "name": "hoek",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1105092,
+          "name": "hoek",
+          "dependency": "hoek",
+          "title": "hoek subject to prototype pollution via the clone function.",
+          "url": "https://github.com/advisories/GHSA-c429-5p7v-vgjp",
+          "severity": "high",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<=6.1.3"
+        },
+        {
+          "source": 1105121,
+          "name": "hoek",
+          "dependency": "hoek",
+          "title": "Prototype Pollution in hoek",
+          "url": "https://github.com/advisories/GHSA-jp4x-w63m-7wgm",
+          "severity": "high",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 8.8,
+            "vectorString": "CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<4.2.1"
+        }
+      ],
+      "effects": [
+        "boom",
+        "joi",
+        "topo",
+        "wreck"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/hoek"
+      ],
+      "fixAvailable": {
+        "name": "grunt-fh-build",
+        "version": "1.0.3",
+        "isSemVerMajor": true
+      }
+    },
+    "https-proxy-agent": {
+      "name": "https-proxy-agent",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1087767,
+          "name": "https-proxy-agent",
+          "dependency": "https-proxy-agent",
+          "title": "Denial of Service in https-proxy-agent",
+          "url": "https://github.com/advisories/GHSA-8g7p-74h8-hg48",
+          "severity": "critical",
+          "cwe": [
+            "CWE-125",
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 9.1,
+            "vectorString": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H"
+          },
+          "range": "<2.2.0"
+        },
+        {
+          "source": 1094488,
+          "name": "https-proxy-agent",
+          "dependency": "https-proxy-agent",
+          "title": "Machine-In-The-Middle in https-proxy-agent",
+          "url": "https://github.com/advisories/GHSA-pc5p-h8pf-mvwp",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-300"
+          ],
+          "cvss": {
+            "score": 6.1,
+            "vectorString": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:C/C:H/I:N/A:N"
+          },
+          "range": "<2.2.3"
+        },
+        "agent-base"
+      ],
+      "effects": [
+        "nsp"
+      ],
+      "range": "<=2.2.2",
+      "nodes": [
+        "node_modules/https-proxy-agent"
+      ],
+      "fixAvailable": {
+        "name": "grunt-fh-build",
+        "version": "1.0.3",
+        "isSemVerMajor": true
+      }
+    },
+    "joi": {
+      "name": "joi",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "hoek",
+        "topo"
+      ],
+      "effects": [],
+      "range": "0.0.2 - 14.3.1",
+      "nodes": [
+        "node_modules/joi"
+      ],
+      "fixAvailable": true
+    },
+    "js-yaml": {
+      "name": "js-yaml",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1085724,
+          "name": "js-yaml",
+          "dependency": "js-yaml",
+          "title": "Denial of Service in js-yaml",
+          "url": "https://github.com/advisories/GHSA-2pr6-76vf-7546",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<3.13.0"
+        },
+        {
+          "source": 1095058,
+          "name": "js-yaml",
+          "dependency": "js-yaml",
+          "title": "Code Injection in js-yaml",
+          "url": "https://github.com/advisories/GHSA-8j8c-7jfh-h6hx",
+          "severity": "high",
+          "cwe": [
+            "CWE-94"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<3.13.1"
+        },
+        "argparse"
+      ],
+      "effects": [
+        "grunt"
+      ],
+      "range": "<=3.13.0",
+      "nodes": [
+        "node_modules/js-yaml"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "jshint": {
+      "name": "jshint",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        "cli",
+        "minimatch",
+        "shelljs",
+        "underscore"
+      ],
+      "effects": [
+        "grunt-contrib-jshint",
+        "plato"
+      ],
+      "range": "0.5.0 || 0.6.0 - 2.13.3",
+      "nodes": [
+        "node_modules/grunt-fh-build/node_modules/jshint",
+        "node_modules/jshint"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "lodash": {
+      "name": "lodash",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1106900,
+          "name": "lodash",
+          "dependency": "lodash",
+          "title": "Prototype Pollution in lodash",
+          "url": "https://github.com/advisories/GHSA-fvqr-27wr-82fm",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-471",
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N"
+          },
+          "range": "<4.17.5"
+        },
+        {
+          "source": 1106913,
+          "name": "lodash",
+          "dependency": "lodash",
+          "title": "Command Injection in lodash",
+          "url": "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
+          "severity": "high",
+          "cwe": [
+            "CWE-77",
+            "CWE-94"
+          ],
+          "cvss": {
+            "score": 7.2,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<4.17.21"
+        },
+        {
+          "source": 1106914,
+          "name": "lodash",
+          "dependency": "lodash",
+          "title": "Prototype Pollution in lodash",
+          "url": "https://github.com/advisories/GHSA-4xc9-xhrj-v574",
+          "severity": "high",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<4.17.11"
+        },
+        {
+          "source": 1106918,
+          "name": "lodash",
+          "dependency": "lodash",
+          "title": "Prototype Pollution in lodash",
+          "url": "https://github.com/advisories/GHSA-jf85-cpcp-j695",
+          "severity": "critical",
+          "cwe": [
+            "CWE-20",
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 9.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H"
+          },
+          "range": "<4.17.12"
+        },
+        {
+          "source": 1106919,
+          "name": "lodash",
+          "dependency": "lodash",
+          "title": "Regular Expression Denial of Service (ReDoS) in lodash",
+          "url": "https://github.com/advisories/GHSA-29mw-wpgm-hmr9",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400",
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": "<4.17.21"
+        },
+        {
+          "source": 1106920,
+          "name": "lodash",
+          "dependency": "lodash",
+          "title": "Prototype Pollution in lodash",
+          "url": "https://github.com/advisories/GHSA-p6mc-m468-83gw",
+          "severity": "high",
+          "cwe": [
+            "CWE-770",
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 7.4,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:H"
+          },
+          "range": ">=3.7.0 <4.17.19"
+        },
+        {
+          "source": 1106923,
+          "name": "lodash",
+          "dependency": "lodash",
+          "title": "Regular Expression Denial of Service (ReDoS) in lodash",
+          "url": "https://github.com/advisories/GHSA-x5rq-j2xg-h7qm",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<4.17.11"
+        }
+      ],
+      "effects": [
+        "archiver",
+        "findup-sync",
+        "grunt-env",
+        "grunt-fh-build",
+        "grunt-legacy-log",
+        "grunt-legacy-log-utils",
+        "grunt-legacy-util",
+        "nock",
+        "plato",
+        "zip-stream"
+      ],
+      "range": "<=4.17.20",
+      "nodes": [
+        "node_modules/archiver/node_modules/lodash",
+        "node_modules/findup-sync/node_modules/lodash",
+        "node_modules/grunt-env/node_modules/lodash",
+        "node_modules/grunt-legacy-log-utils/node_modules/lodash",
+        "node_modules/grunt-legacy-log/node_modules/lodash",
+        "node_modules/grunt-legacy-util/node_modules/lodash",
+        "node_modules/grunt/node_modules/lodash",
+        "node_modules/lodash",
+        "node_modules/nock/node_modules/lodash",
+        "node_modules/plato/node_modules/lodash",
+        "node_modules/zip-stream/node_modules/lodash"
+      ],
+      "fixAvailable": {
+        "name": "nock",
+        "version": "14.0.10",
+        "isSemVerMajor": true
+      }
+    },
+    "minimatch": {
+      "name": "minimatch",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1093710,
+          "name": "minimatch",
+          "dependency": "minimatch",
+          "title": "Regular Expression Denial of Service in minimatch",
+          "url": "https://github.com/advisories/GHSA-hxm2-r34f-qmc5",
+          "severity": "high",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<3.0.2"
+        },
+        {
+          "source": 1096485,
+          "name": "minimatch",
+          "dependency": "minimatch",
+          "title": "minimatch ReDoS vulnerability",
+          "url": "https://github.com/advisories/GHSA-f8q6-p94x-37v3",
+          "severity": "high",
+          "cwe": [
+            "CWE-400",
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<3.0.5"
+        }
+      ],
+      "effects": [
+        "glob",
+        "grunt",
+        "jshint"
+      ],
+      "range": "<=3.0.4",
+      "nodes": [
+        "node_modules/archiver/node_modules/minimatch",
+        "node_modules/findup-sync/node_modules/minimatch",
+        "node_modules/glob/node_modules/minimatch",
+        "node_modules/grunt-fh-build/node_modules/jshint/node_modules/minimatch",
+        "node_modules/grunt-fh-build/node_modules/minimatch",
+        "node_modules/grunt/node_modules/minimatch",
+        "node_modules/mocha/node_modules/minimatch"
+      ],
+      "fixAvailable": {
+        "name": "mocha",
+        "version": "11.7.2",
+        "isSemVerMajor": true
+      }
+    },
+    "minimist": {
+      "name": "minimist",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1096466,
+          "name": "minimist",
+          "dependency": "minimist",
+          "title": "Prototype Pollution in minimist",
+          "url": "https://github.com/advisories/GHSA-vh95-rmgr-6w4m",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 5.6,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L"
+          },
+          "range": "<0.2.1"
+        },
+        {
+          "source": 1097677,
+          "name": "minimist",
+          "dependency": "minimist",
+          "title": "Prototype Pollution in minimist",
+          "url": "https://github.com/advisories/GHSA-xvch-5gv4-984h",
+          "severity": "critical",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 9.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<0.2.4"
+        }
+      ],
+      "effects": [
+        "mkdirp"
+      ],
+      "range": "<=0.2.3",
+      "nodes": [
+        "node_modules/mocha/node_modules/minimist"
+      ],
+      "fixAvailable": {
+        "name": "mocha",
+        "version": "11.7.2",
+        "isSemVerMajor": true
+      }
+    },
+    "mkdirp": {
+      "name": "mkdirp",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        "minimist"
+      ],
+      "effects": [
+        "mocha"
+      ],
+      "range": "0.4.1 - 0.5.1",
+      "nodes": [
+        "node_modules/mocha/node_modules/mkdirp"
+      ],
+      "fixAvailable": {
+        "name": "mocha",
+        "version": "11.7.2",
+        "isSemVerMajor": true
+      }
+    },
+    "mocha": {
+      "name": "mocha",
+      "severity": "critical",
+      "isDirect": true,
+      "via": [
+        "debug",
+        "diff",
+        "glob",
+        "growl",
+        "mkdirp"
+      ],
+      "effects": [],
+      "range": "0.6.0 - 6.2.2 || 7.0.0-esm1 - 7.1.0",
+      "nodes": [
+        "node_modules/mocha"
+      ],
+      "fixAvailable": {
+        "name": "mocha",
+        "version": "11.7.2",
+        "isSemVerMajor": true
+      }
+    },
+    "ms": {
+      "name": "ms",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1094419,
+          "name": "ms",
+          "dependency": "ms",
+          "title": "Vercel ms Inefficient Regular Expression Complexity vulnerability",
+          "url": "https://github.com/advisories/GHSA-w9mr-4mfr-499f",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": "<2.0.0"
+        }
+      ],
+      "effects": [
+        "debug"
+      ],
+      "range": "<2.0.0",
+      "nodes": [
+        "node_modules/debug/node_modules/ms"
+      ],
+      "fixAvailable": {
+        "name": "mocha",
+        "version": "11.7.2",
+        "isSemVerMajor": true
+      }
+    },
+    "nock": {
+      "name": "nock",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "debug",
+        "lodash"
+      ],
+      "effects": [],
+      "range": "0.29.0 - 7.7.3 || 8.1.0 - 9.0.2",
+      "nodes": [
+        "node_modules/nock"
+      ],
+      "fixAvailable": {
+        "name": "nock",
+        "version": "14.0.10",
+        "isSemVerMajor": true
+      }
+    },
+    "nsp": {
+      "name": "nsp",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        "https-proxy-agent",
+        "joi",
+        "wreck"
+      ],
+      "effects": [
+        "grunt-fh-build"
+      ],
+      "range": ">=2.0.0",
+      "nodes": [
+        "node_modules/nsp"
+      ],
+      "fixAvailable": {
+        "name": "grunt-fh-build",
+        "version": "1.0.3",
+        "isSemVerMajor": true
+      }
+    },
+    "plato": {
+      "name": "plato",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "eslint",
+        "jshint",
+        "lodash"
+      ],
+      "effects": [
+        "grunt-plato"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/plato"
+      ],
+      "fixAvailable": true
+    },
+    "request": {
+      "name": "request",
+      "severity": "critical",
+      "isDirect": true,
+      "via": [
+        {
+          "source": 1096727,
+          "name": "request",
+          "dependency": "request",
+          "title": "Server-Side Request Forgery in Request",
+          "url": "https://github.com/advisories/GHSA-p8p7-x288-28g6",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-918"
+          ],
+          "cvss": {
+            "score": 6.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+          },
+          "range": "<=2.88.2"
+        },
+        "form-data",
+        "tough-cookie"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/request"
+      ],
+      "fixAvailable": false
+    },
+    "semver": {
+      "name": "semver",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1101089,
+          "name": "semver",
+          "dependency": "semver",
+          "title": "semver vulnerable to Regular Expression Denial of Service",
+          "url": "https://github.com/advisories/GHSA-c2qf-rxjj-qqgw",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<5.7.2"
+        }
+      ],
+      "effects": [
+        "agent-base"
+      ],
+      "range": "<5.7.2",
+      "nodes": [
+        "node_modules/agent-base/node_modules/semver"
+      ],
+      "fixAvailable": {
+        "name": "grunt-fh-build",
+        "version": "1.0.3",
+        "isSemVerMajor": true
+      }
+    },
+    "shelljs": {
+      "name": "shelljs",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1088208,
+          "name": "shelljs",
+          "dependency": "shelljs",
+          "title": "Improper Privilege Management in shelljs",
+          "url": "https://github.com/advisories/GHSA-64g7-mvw6-v9qj",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-269"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<0.8.5"
+        },
+        {
+          "source": 1095126,
+          "name": "shelljs",
+          "dependency": "shelljs",
+          "title": "Improper Privilege Management in shelljs",
+          "url": "https://github.com/advisories/GHSA-4rq4-32rv-6wp6",
+          "severity": "high",
+          "cwe": [
+            "CWE-269"
+          ],
+          "cvss": {
+            "score": 7.1,
+            "vectorString": "CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H"
+          },
+          "range": "<0.8.5"
+        }
+      ],
+      "effects": [
+        "eslint",
+        "jshint"
+      ],
+      "range": "<=0.8.4",
+      "nodes": [
+        "node_modules/eslint/node_modules/shelljs",
+        "node_modules/grunt-fh-build/node_modules/shelljs",
+        "node_modules/shelljs"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "table": {
+      "name": "table",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "ajv"
+      ],
+      "effects": [],
+      "range": "3.7.10 - 4.0.2",
+      "nodes": [
+        "node_modules/table"
+      ],
+      "fixAvailable": true
+    },
+    "tar-stream": {
+      "name": "tar-stream",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "bl"
+      ],
+      "effects": [
+        "archiver"
+      ],
+      "range": "<=1.2.0",
+      "nodes": [
+        "node_modules/tar-stream"
+      ],
+      "fixAvailable": true
+    },
+    "topo": {
+      "name": "topo",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "hoek"
+      ],
+      "effects": [
+        "joi"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/topo"
+      ],
+      "fixAvailable": true
+    },
+    "tough-cookie": {
+      "name": "tough-cookie",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1097682,
+          "name": "tough-cookie",
+          "dependency": "tough-cookie",
+          "title": "tough-cookie Prototype Pollution vulnerability",
+          "url": "https://github.com/advisories/GHSA-72xf-g2v4-qvf3",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N"
+          },
+          "range": "<4.1.3"
+        }
+      ],
+      "effects": [
+        "request"
+      ],
+      "range": "<4.1.3",
+      "nodes": [
+        "node_modules/tough-cookie"
+      ],
+      "fixAvailable": false
+    },
+    "underscore": {
+      "name": "underscore",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1095097,
+          "name": "underscore",
+          "dependency": "underscore",
+          "title": "Arbitrary Code Execution in underscore",
+          "url": "https://github.com/advisories/GHSA-cf4h-3jhx-xvhq",
+          "severity": "critical",
+          "cwe": [
+            "CWE-94"
+          ],
+          "cvss": {
+            "score": 9.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": ">=1.3.2 <1.12.1"
+        }
+      ],
+      "effects": [
+        "argparse",
+        "jshint"
+      ],
+      "range": "1.3.2 - 1.12.0",
+      "nodes": [
+        "node_modules/argparse/node_modules/underscore",
+        "node_modules/grunt-fh-build/node_modules/jshint/node_modules/underscore"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "underscore.string": {
+      "name": "underscore.string",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1085693,
+          "name": "underscore.string",
+          "dependency": "underscore.string",
+          "title": "Regular Expression Denial of Service in underscore.string",
+          "url": "https://github.com/advisories/GHSA-v2p6-4mp7-3r9v",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<3.3.5"
+        }
+      ],
+      "effects": [
+        "argparse",
+        "grunt",
+        "grunt-legacy-log-utils"
+      ],
+      "range": "<3.3.5",
+      "nodes": [
+        "node_modules/argparse/node_modules/underscore.string",
+        "node_modules/grunt-legacy-log-utils/node_modules/underscore.string",
+        "node_modules/grunt-legacy-log/node_modules/underscore.string",
+        "node_modules/underscore.string"
+      ],
+      "fixAvailable": {
+        "name": "grunt-contrib-jshint",
+        "version": "3.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "wreck": {
+      "name": "wreck",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "boom",
+        "hoek"
+      ],
+      "effects": [
+        "nsp"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/wreck"
+      ],
+      "fixAvailable": {
+        "name": "grunt-fh-build",
+        "version": "1.0.3",
+        "isSemVerMajor": true
+      }
+    },
+    "xml2js": {
+      "name": "xml2js",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        {
+          "source": 1096693,
+          "name": "xml2js",
+          "dependency": "xml2js",
+          "title": "xml2js is vulnerable to prototype pollution",
+          "url": "https://github.com/advisories/GHSA-776f-qx25-q3cc",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N"
+          },
+          "range": "<0.5.0"
+        }
+      ],
+      "effects": [],
+      "range": "<0.5.0",
+      "nodes": [
+        "node_modules/xml2js"
+      ],
+      "fixAvailable": {
+        "name": "xml2js",
+        "version": "0.6.2",
+        "isSemVerMajor": true
+      }
+    },
+    "zip-stream": {
+      "name": "zip-stream",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "lodash"
+      ],
+      "effects": [
+        "archiver"
+      ],
+      "range": "0.3.6 - 0.8.0",
+      "nodes": [
+        "node_modules/zip-stream"
+      ],
+      "fixAvailable": true
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 1,
+      "moderate": 15,
+      "high": 19,
+      "critical": 18,
+      "total": 53
+    },
+    "dependencies": {
+      "prod": 65,
+      "dev": 773,
+      "optional": 9,
+      "peer": 42,
+      "peerOptional": 0,
+      "total": 837
+    }
+  }
+}
