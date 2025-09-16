@@ -1,29 +1,162 @@
 [![Build Status](https://travis-ci.org/veeraRaghavSanthosh/sharepointConnector.svg)](https://travis-ci.org/veeraRaghavSanthosh/sharepointConnector)
 [![bitHound Score](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector/badges/score.svg)](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector)
 
+# SharePoint Connector
 
-A Node.js SharePoint Client inherited from sharepointer (by cian clarke) .
+A Node.js SharePoint Client inherited from sharepointer (by cian clarke).
 
-# Usage Example
+## Installation
+
+### Prerequisites
+- Node.js (version 6.0 or higher recommended)
+- npm (Node Package Manager)
+
+### Install from npm
+```bash
+npm install sharepointconnector
+```
+
+### Install from source
+```bash
+# Clone the repository
+git clone https://github.com/veeraRaghavSanthosh/sharepointConnector.git
+cd sharepointConnector
+
+# Install dependencies
+npm install
+```
+
+## Quick Start
+
+### Basic Usage
+```javascript
+var sharepoint = require('sharepointconnector')({
+  username : 'someusername',
+  password : 'somepassword',
+  // Authentication type - current valid values: ntlm, basic, online, onlinesaml
+  type : 'ntlm',
+  url : 'https://sharepointHostname.com'
+});
+
+sharepoint.login(function(err){
+  if (err){
+    return console.error(err);
+  }
+  console.log('Successfully connected to SharePoint!');
+});
+```
+
+### Running the Application
+This is a library package, so it doesn't have a standalone application to run. Instead, you use it in your Node.js applications as shown in the usage examples below.
+
+## Testing
+
+### Prerequisites for Testing
+Before running tests, you need to install the required development dependencies:
+
+```bash
+# Install Grunt CLI globally (if not already installed)
+npm install -g grunt-cli
+
+# Install project dependencies (including dev dependencies)
+npm install
+```
+
+### Running Unit Tests
+Unit tests use Mocha and include JSHint linting:
+
+```bash
+# Run unit tests and linting
+grunt test
+
+# Alternative: Run tests directly with npm
+npm test
+```
+
+### Running Integration Tests
+Integration tests require actual SharePoint credentials. Set up environment variables with your SharePoint credentials:
+
+```bash
+# Set environment variables
+export SP_USERNAME=YOUR_USERNAME
+export SP_PASSWORD=YOUR_PASSWORD
+export SP_HOST=https://your_sp_hostname.com
+export SP_AUTH_TYPE=ntlm  # or basic, online, onlinesaml
+
+# Run integration tests
+grunt integration
+```
+
+### Available Grunt Tasks
+- `grunt test` - Run unit tests and JSHint linting
+- `grunt integration` - Run integration tests (requires SP credentials)
+- `grunt jshint` - Run JSHint linting only
+
+## Development
+
+### Project Structure
+```
+├── lib/                    # Core library files
+│   ├── auth/              # Authentication modules
+│   │   ├── basic.js       # Basic authentication
+│   │   ├── ntlm.js        # NTLM authentication
+│   │   ├── online.js      # SharePoint Online authentication
+│   │   └── onlinesaml.js  # SAML SSO authentication
+│   ├── objects/           # SharePoint object handlers
+│   │   ├── lists.js       # List operations
+│   │   └── listItems.js   # List item operations
+│   └── util/              # Utility functions
+├── test/                  # Test files
+│   ├── unit/             # Unit tests
+│   └── integration/      # Integration tests
+├── package.json          # Project dependencies and scripts
+├── Gruntfile.js          # Grunt task configuration
+└── sharepointconnector.js # Main entry point
+```
+
+### Contributing
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes
+4. Run tests: `grunt test`
+5. Commit your changes: `git commit -am 'Add some feature'`
+6. Push to the branch: `git push origin feature-name`
+7. Submit a pull request
+
+# Detailed Usage Examples
+
+## Working with Lists
 
 ```javascript
 var sharepoint = require('sharepointconnector')({
   username : 'someusername',
   password : 'somepassword',
-  // Authentication type - current valid values: ntlm, basic, online,onlinesaml
+  // Authentication type - current valid values: ntlm, basic, online, onlinesaml
   type : 'ntlm',
   url : 'https://sharepointHostname.com'
 });
+
 sharepoint.login(function(err){
   if (err){
     return console.error(err);
   }
+  
   // Once logged in, we can list the "lists" within sharepoint
   sharepoint.lists.list(function(err, listRes){
-      var aList = listRes[0];
+    if (err) {
+      return console.error('Error listing SharePoint lists:', err);
+    }
+    
+    var aList = listRes[0];
+    console.log('Found list:', aList.Title);
+    
     // We can pick a particular list, and read it. This also gives us the list's Items[] and Fields[]
     sharepoint.lists.read(aList.Id, function(err, listRead){
-      console.log(singleResult);
+      if (err) {
+        return console.error('Error reading list:', err);
+      }
+      console.log('List details:', listRead);
+      console.log('Number of items:', listRead.Items.length);
     });
   });
 });
@@ -277,27 +410,21 @@ Yet another SharePoint Client. This one:
 
 - Accepts pull requests :-)
 
-# Tests
+# Additional Information
+
+## Test Architecture
 Tests are written in Mocha. Unit tests simply require the integration tests, and `nock` the API they integrate with - thus reducing the amount of test code we need to write.
 
-## Running Unit tests
-This includes jshint, and the mocha unit test suite.
+For complete testing instructions including setup, prerequisites, and available commands, see the [Testing](#testing) section above.
 
-```
-# install grunt globally
-npm install grunt-cli -g
-#run the tests
-grunt test
-```
+## Test Structure
+- **Unit Tests**: Located in `test/unit/` - Mock SharePoint API responses using nock
+- **Integration Tests**: Located in `test/integration/` - Test against actual SharePoint instances  
+- **Fixtures**: Located in `test/fixtures/` - Shared test data and mocks
 
-## Running Integration Tests
-
-```
-#Setup environment variables with your SP creds:
-export SP_USERNAME=YOUR_USERNAME
-export SP_PASSWORD=YOUR_PASSWORD
-export SP_HOST=https://your_sp_hostname.com
-export SP_AUTH_TYPE=(ntlm|basic|online|onlinesaml)
-#Then run the tests:
-grunt integration
-```
+## Test Coverage
+The test suite covers:
+- Authentication flows (NTLM, Basic, Online, SAML)
+- List operations (create, read, update, delete)
+- List item operations
+- Error handling scenarios
