@@ -1,8 +1,156 @@
 [![Build Status](https://travis-ci.org/veeraRaghavSanthosh/sharepointConnector.svg)](https://travis-ci.org/veeraRaghavSanthosh/sharepointConnector)
 [![bitHound Score](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector/badges/score.svg)](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector)
 
+# SharePoint Connector
 
-A Node.js SharePoint Client inherited from sharepointer (by cian clarke) .
+A Node.js SharePoint Client inherited from sharepointer (by cian clarke) that supports multiple authentication strategies, file streaming, fetching details by list Title, pagination, extendable record fetch limit, query operators, and concurrent user login.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Running the Project](#running-the-project)
+- [Testing](#testing)
+- [Usage Example](#usage-example)
+- [Parameters](#parameters)
+- [Additional Parameters](#additional-parameters-for-listing-and-reading-lists-and-listitems)
+- [SharePoint Primer](#a-sharepoint-primer)
+- [Methods](#methods)
+- [Why Another SharePoint Client?](#why-another-sharepoint-client)
+
+## Installation
+
+### Prerequisites
+
+- Node.js (version 0.12 or higher)
+- npm (Node Package Manager)
+- Access to a SharePoint instance (on-premises or SharePoint 365)
+
+### Install from npm
+
+```bash
+npm install sharepointconnector
+```
+
+### Install from Source
+
+1. Clone the repository:
+```bash
+git clone https://github.com/veeraRaghavSanthosh/sharepointConnector.git
+cd sharepointConnector
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Install development dependencies (for testing and building):
+```bash
+npm install --dev
+```
+
+4. Install Grunt CLI globally (required for running tests):
+```bash
+npm install -g grunt-cli
+```
+
+## Quick Start
+
+After installation, you can start using the SharePoint connector in your Node.js application:
+
+```javascript
+var sharepoint = require('sharepointconnector')({
+  username : 'your_username',
+  password : 'your_password',
+  type : 'ntlm', // or 'basic', 'online', 'onlinesaml'
+  url : 'https://your-sharepoint-hostname.com'
+});
+
+sharepoint.login(function(err){
+  if (err) {
+    return console.error('Login failed:', err);
+  }
+  console.log('Successfully connected to SharePoint!');
+  
+  // Your SharePoint operations here
+  sharepoint.lists.list(function(err, lists){
+    if (err) return console.error(err);
+    console.log('Available lists:', lists.length);
+  });
+});
+```
+
+## Running the Project
+
+### As a Library
+
+This is primarily a library meant to be used in other Node.js applications. Install it as a dependency and require it in your code as shown in the Quick Start section.
+
+### For Development
+
+If you're contributing to the project or want to run it in development mode:
+
+1. Clone and install as described in the installation section
+2. Make your changes to the source code
+3. Run linting and tests to ensure everything works:
+```bash
+grunt test
+```
+
+## Testing
+
+The project includes comprehensive test suites with both unit tests and integration tests.
+
+### Running Unit Tests
+
+Unit tests use mocked SharePoint API responses and don't require actual SharePoint credentials:
+
+```bash
+# Run linting and unit tests
+grunt test
+
+# Or run just the linting
+grunt jshint
+```
+
+### Running Integration Tests
+
+Integration tests connect to a real SharePoint instance and require valid credentials:
+
+1. Set up environment variables with your SharePoint credentials:
+```bash
+export SP_USERNAME=your_sharepoint_username
+export SP_PASSWORD=your_sharepoint_password  
+export SP_HOST=https://your-sharepoint-hostname.com
+export SP_AUTH_TYPE=ntlm  # or basic, online, onlinesaml
+```
+
+2. Run the integration tests:
+```bash
+grunt integration
+```
+
+**Note:** Integration tests require access to a SharePoint instance and may take longer to complete (up to 25 seconds timeout per test).
+
+### Test Structure
+
+- **Unit Tests**: Located in `test/unit/` directory
+  - `test-list-get.js` - Tests for listing and reading SharePoint lists
+  - `test-list-create-delete.js` - Tests for creating and deleting lists
+  - `test-list-items.js` - Tests for list item operations
+
+- **Integration Tests**: Located in `test/integration/` directory
+  - Mirror the unit tests but run against real SharePoint instances
+  - Require valid SharePoint credentials and connectivity
+
+### Continuous Integration
+
+The project is configured with Travis CI for automated testing. The configuration:
+- Tests against Node.js version 0.12
+- Installs Grunt CLI automatically
+- Runs `npm install --force` to ensure all dependencies are installed
+- Executes the test suite on every commit
 
 # Usage Example
 
