@@ -42,6 +42,7 @@ var sharepoint = require('sharepointconnector')({
   // All of the following params are optional:
   context : 'myCustomerSite', // Set to create resources outside of the base site context, `web`
   verbose : false, // Set to true to stop filtering responses, instead returning everything
+  logLevel : 'info', // Logging level: 'trace', 'debug', 'info', 'warn', 'error', 'silent' (default: 'info')
   proxy : undefined, // set to string hostname of proxy if running through one
   strictSSL : true, // set to false if connecting to SP instance with self-signed cert
   federatedAuthUrl : 'http://mysamlloginservice.com', // only set for auth type 'onlinesaml', the URL of the SAML service which issues assertions to forward to the SharePoint login URL
