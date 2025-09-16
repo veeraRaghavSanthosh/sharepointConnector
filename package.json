@@ -8,7 +8,11 @@
   },
   "main": "sharepointconnector.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "migrate": "node bin/migrate.js",
+    "migrate:up": "node bin/migrate.js up",
+    "migrate:down": "node bin/migrate.js down",
+    "migrate:run-all": "node bin/migrate.js run-all"
   },
   "author": "veera raghava santhosh kumar reddy<sanra46@gmail.com>",
   "keywords": [
