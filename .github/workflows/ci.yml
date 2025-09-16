@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ master, main ]
+  push:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        npm install -g grunt-cli
+        npm install --force
+    
+    - name: Run linting
+      run: npm run test
+    
+    - name: Run unit tests
+      run: |
+        if [ -d "test/unit" ] && [ "$(ls -A test/unit)" ]; then
+          ./node_modules/.bin/mocha test/unit/*.js --timeout 10000
+        else
+          echo "No unit tests found or unit test directory is empty"
+        fi
+      continue-on-error: false
+    
+    - name: Run integration tests (if available)
+      run: |
+        if [ -d "test/integration" ] && [ "$(ls -A test/integration)" ]; then
+          ./node_modules/.bin/mocha test/integration/*.js --timeout 25000
+        else
+          echo "No integration tests found or integration test directory is empty"
+        fi
+      continue-on-error: true
