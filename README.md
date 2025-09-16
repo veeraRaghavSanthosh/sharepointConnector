@@ -277,27 +277,65 @@ Yet another SharePoint Client. This one:
 
 - Accepts pull requests :-)
 
+# Installation
+
+## Prerequisites
+- Node.js (version 6.0 or higher recommended)
+- npm (comes with Node.js)
+
+## Install Dependencies
+
+```bash
+# Clone the repository
+git clone https://github.com/veeraRaghavSanthosh/sharepointConnector.git
+cd sharepointConnector
+
+# Install project dependencies
+npm install
+
+# Install Grunt CLI globally (required for running tests)
+npm install -g grunt-cli
+```
+
+# Running the Application
+
+This is a library package, so it's typically used as a dependency in other projects. To use it in your project:
+
+```bash
+npm install sharepointconnector
+```
+
+Then require it in your Node.js application as shown in the usage examples above.
+
 # Tests
+
 Tests are written in Mocha. Unit tests simply require the integration tests, and `nock` the API they integrate with - thus reducing the amount of test code we need to write.
 
-## Running Unit tests
-This includes jshint, and the mocha unit test suite.
+## Running Unit Tests
 
-```
-# install grunt globally
-npm install grunt-cli -g
-#run the tests
+This includes jshint linting and the mocha unit test suite:
+
+```bash
+# Run linting and unit tests
+npm test
+
+# Or using Grunt directly
 grunt test
 ```
 
 ## Running Integration Tests
 
-```
-#Setup environment variables with your SP creds:
+Integration tests require valid SharePoint credentials and connection details:
+
+```bash
+# Setup environment variables with your SharePoint credentials:
 export SP_USERNAME=YOUR_USERNAME
 export SP_PASSWORD=YOUR_PASSWORD
 export SP_HOST=https://your_sp_hostname.com
 export SP_AUTH_TYPE=(ntlm|basic|online|onlinesaml)
-#Then run the tests:
+
+# Then run the integration tests:
 grunt integration
 ```
+
+**Note:** Integration tests will connect to a real SharePoint instance, so ensure you have proper credentials and network access.
