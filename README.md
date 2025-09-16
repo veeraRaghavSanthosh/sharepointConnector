@@ -1,36 +1,60 @@
+# SharePoint Connector
+
 [![Build Status](https://travis-ci.org/veeraRaghavSanthosh/sharepointConnector.svg)](https://travis-ci.org/veeraRaghavSanthosh/sharepointConnector)
 [![bitHound Score](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector/badges/score.svg)](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector)
 
+A Node.js SharePoint Client inherited from sharepointer (by cian clarke).
 
-A Node.js SharePoint Client inherited from sharepointer (by cian clarke) .
+## Table of Contents
 
-# Usage Example
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Running the Project](#running-the-project)
+- [Testing](#testing)
+- [Usage Examples](#usage-examples)
+- [API Documentation](#api-documentation)
+- [Authentication Types](#authentication-types)
+- [Contributing](#contributing)
 
-```javascript
-var sharepoint = require('sharepointconnector')({
-  username : 'someusername',
-  password : 'somepassword',
-  // Authentication type - current valid values: ntlm, basic, online,onlinesaml
-  type : 'ntlm',
-  url : 'https://sharepointHostname.com'
-});
-sharepoint.login(function(err){
-  if (err){
-    return console.error(err);
-  }
-  // Once logged in, we can list the "lists" within sharepoint
-  sharepoint.lists.list(function(err, listRes){
-      var aList = listRes[0];
-    // We can pick a particular list, and read it. This also gives us the list's Items[] and Fields[]
-    sharepoint.lists.read(aList.Id, function(err, listRead){
-      console.log(singleResult);
-    });
-  });
-});
+## Installation
+
+### Prerequisites
+
+- **Node.js**: Version 8.0 or higher
+- **npm**: Version 5.0 or higher (usually comes with Node.js)
+
+### Install from npm
+
+```bash
+npm install sharepointconnector
 ```
 
-## Parameters
-When initialising Sharepoint, there are a number of optional params which can be specified at init. Here are their defaults & descriptions
+### Install from Source
+
+1. Clone the repository:
+```bash
+git clone https://github.com/veeraRaghavSanthosh/sharepointConnector.git
+cd sharepointConnector
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Install development dependencies (for testing and development):
+```bash
+npm install --dev
+```
+
+4. Install Grunt CLI globally (required for running tests):
+```bash
+npm install -g grunt-cli
+```
+
+## Quick Start
+
+Here's a simple example to get you started:
 
 ```javascript
 var sharepoint = require('sharepointconnector')({
@@ -38,266 +62,588 @@ var sharepoint = require('sharepointconnector')({
   password : 'somepassword',
   // Authentication type - current valid values: ntlm, basic, online, onlinesaml
   type : 'ntlm',
-  url : 'https://SharepointHostname.com',
-  // All of the following params are optional:
-  context : 'myCustomerSite', // Set to create resources outside of the base site context, `web`
-  verbose : false, // Set to true to stop filtering responses, instead returning everything
-  proxy : undefined, // set to string hostname of proxy if running through one
-  strictSSL : true, // set to false if connecting to SP instance with self-signed cert
-  federatedAuthUrl : 'http://mysamlloginservice.com', // only set for auth type 'onlinesaml', the URL of the SAML service which issues assertions to forward to the SharePoint login URL
-  rtFa: <token>,// an optional parameter to set rtFa token value,
-  FedAuth:<token> // an optional parameter to set FedAuth token value,  
-});
-```
-
-## Additional Parameters for listing and reading Lists and ListItems
-
-```javascript
-  fieldValuesAsText : true, //Return Lookup Field Values as Text for Items
-  filterFields : [{field: 'field1', value: 'value1'}], //Filter Items in List based on field value(s) $filter=
-  selectFields : ['field1', 'field2'], //Only return List or Item data for fields specified $select=
-  expandFields : ['field1', 'field2'], //"JOIN" another list based on a lookup value and return data $expand=
-  orOperator:false, // set to true to enable 'or' operation   
-  andOrOperator:false,// set to true to enable 'andor' operation
-  $top: "1000" // set the required '$top' value (to change the response cap) and by default it is set to 5000
-```
-
-# A Sharepoint Primer
-Skip this if you already know enough about SharePoint.<br>Here's the basics I wanted to know about this product before I began integrating:
-- Sharepoint is a number of products:
-  - SharePoint 2013 - the on premise version of Sharepoint which I've seen most often.
-  - Sharepoint 365 - the online SharePoint product.
-
-- **Everything is a List** in SharePoint. Document Library? A list. The tasks app? Just a list. Discussion Board? You got it, it's a list. Site Pages? List. Turns out, Sharepoint reuses the base type `List` for a lot of things.
-
-# Methods
-## Lists
-As mentioned above, SharePoint is driven by lists. The base SharePoint API allows you to `CRUDL` lists, but the read operation doesn't return Items[] or Fields[] - this is a separate API operation. With Sharepointer, list read operations also retrieve all Fields[] and Items[] on the list for convenience.  
-
-### Lists List
-Confusing, I know. Bear with me. Lists all objects of type `list` in sharepoints (and remember, almost everything in Sharepoint is a list!).
-
-
-```javascript
-sharepoint.lists.list(function(err, listRes,nextUrl){
-  // listRes will be an array of lists [{ Id : '1a2b3c', ... }, { Id : '2b3c4d' }, { Id : '5d6e7f' }]
-});
-```
-
-You can now use any of the following functions to operate upon lists. Note that each `lists` object in the array will also have a convenience function which operates on itself for read, update & delete. These are also documented below.
-
-### Lists Create
-Creating a result requires a title and a description.
-
-```javascript
-sharepoint.lists.create({ title : 'My new list', description : 'Some list description' }, function(err, createRes){
-  // createRes will be the newly created list as an object { Id : 'list Name', title : 'My new list', ...}
-});
-```
-
-### Lists Read
-List Read can take a string as the first param (assumes list Id), or a params object specifying either a guid or title.<br>The list operation already tells us quite a bit about that list, but this read call also returns Fields[] and Items[]. This is different to how the SharePoint API behaves, and is offered as a convenience.
-
-```javascript
-// Get a list by ID - you can find this under the 'Id' property.
-sharepoint.lists.read('list name', function(err, listReadResult){
-  // listReadResult will be an object { Id : 'list name', Title : 'SomeListTitle', Items : [{}, {}], Fields : [{}, {}]  ... }
+  url : 'https://sharepointHostname.com'
 });
 
-// Get a list by name
-sharepoint.lists.read({title : 'some list name' }, function(err, listReadResult){
-  // listReadResult will be an object { Id : 'list name', Title : 'some list name', ... }
-});
-
-// You can also call a read() operation from an object returned from the list operation for convenience like this
-sharepoint.lists.list(function(err, listRes){
-  var aList = listRes[0];
-  aList.read(function(err, aListReadResult){
-
-  });
-});
-
-
-```
-
-## Lists Update
-Updating requires an ID and a title. Optionally, you can just specify all this in one object.
-
-```javascript
-// Update specifying the Id separately
-return sharepoint.lists.update('list name', { Title : 'MyNewTitle' }, function(err, updateResult){
-  // updateResult will be the object you passed in, but not the full list. To get the fully updated object, a subsequent read is needed.
-});
-
-// Updating specifying the Id in one param
-return sharepoint.lists.update({ Id : 'list name', Title : 'MyNewTitle' }, function(err, updateResult){
-});
-
-// You can also call a update() operation from an object returned from the list operation for convenience like this
-sharepoint.lists.list(function(err, listRes){
-  var aList = listRes[0];
-  aList.update({Title : '' }, function(err){
-
+sharepoint.login(function(err){
+  if (err){
+    return console.error(err);
+  }
+  
+  // Once logged in, we can list the "lists" within sharepoint
+  sharepoint.lists.list(function(err, listRes){
+    if (err) {
+      return console.error(err);
+    }
+    
+    var aList = listRes[0];
+    console.log('Found list:', aList.Title);
+    
+    // Read a particular list with its Items[] and Fields[]
+    sharepoint.lists.read(aList.Id, function(err, listRead){
+      if (err) {
+        return console.error(err);
+      }
+      
+      console.log('List details:', listRead);
+    });
   });
 });
 ```
 
-### Lists Delete
-Delete requires a list Id. Deletion by title is not possible.
+## Running the Project
 
-```javascript
-sharepoint.lists.del('someListId', function(err){
-  // Err will indicate if somethign went wrong - there's no second param
-});
+### Development Mode
 
-// You can also call a delete() operation from an object returned from the list operation for convenience like this
-sharepoint.lists.list(function(err, listRes){
-  var aList = listRes[0];
-  aList.update({Title : '' }, function(err){
+For development, you can run the project with various configurations:
 
-  });
-});
-```
+1. **Basic Development Setup**:
+```bash
+# Navigate to project directory
+cd sharepointConnector
 
-## List Items
-Lists in sharepoint have a collection of items. These are usually another API call away, but as discussed earlier, sharepointer retrieves these upon performing a read() call.
+# Install dependencies if not already done
+npm install
 
-### ListItems List
-To retrieve the items contained within a list,
-
-```javascript
-sharepoint.listItems.list('list Name', function(err, itemsUnderThisList,nextUrl){
-  //nextUrl -- will provide the next page url and will be used to represent paginated data     
-
-});
-// below method can be used to read complete sharepoint list, irrespective of the pagination SP value it provides the complete data set  (this method will takecare of the pagination internally and provides complete data set).
-sharepoint.listItems.listAll('list Name',function(err, listRes){
-
-  });
-
-// will provide the current logged in user details
-sharepoint.listItems.currentuser("list name",function(err,response){
-
-});
-// will provide the binary stream content
-sharepoint.listItems.byteStream("floder Name", "filename",function(err,serviceReqObj){
-// for easy binary handling, invoked the service and piped it to response
-    require('request').get(serviceReqObj).on('response', function(response) {
-          response.pipe(res);
-        });
-});
-
-// below method can be used to read binary content based on the file path
-sharepoint.listItems.byteStreamByFilePath("file Path",function(err,serviceReqObj){
-// for ease of binary handling, invoked the service and piped it to response
-    require('request').get(serviceReqObj).on('response', function(response) {
-          response.pipe(res);
-        });
-});
-
-```
-
-Of course, we can also just perform a list read:
-
-```javascript
-sharepoint.listItems.read('list Name', function(err, listReadResult){
-  // we now have the items under listReadResult.Items
-});
-```
-
-### ListItem Create
-We can create new ListItems within a list using the create function. The responsibility is on the user to ensure all required fields are included prior to creating a listItem, and no extraneous fields are included. SharePoint throws meaningful & useful errors (..for once) if you include incorrect fields here, so it's easy to debug.
-
-```javascript
-sharepoint.listItems.create('list Name', { Title : 'My new list item', Remember: 'To include all fields' }, function(err, listCreateResult){
-
-});
-```
-
-We can also just call .create() on the `Items` property of a list which we've read.
-
-```javascript
-sharepoint.lists.read('list Name', function(err, listReadResult){
-  // Now that we've read a list, we can create an item under it by running:
-  listReadResult.Items.create({ Title : 'My new item' }, function(){
-
-  });
-  // We could also use listReadResult.createItem() to the same effect
-});
-```
-
-### ListItem Read
-As part of reading a ListItem, we also retrieve it's File property, if any exists. This is helpful, because many lists include a file attachment (e.g. Document Libraries). If no file exists, this will simply be `undefined`.
-
-```javascript
-sharepoint.listItems.read('list Name', 'someListItemId', function(err, singleListItem){
-
-});
-```
-
-Of course, we can also just call .read() on a listItem, after we read it's containing list.
-
-```javascript
-sharepoint.lists.read('list Name', function(err, listReadResult){
-  var anItemInThisList = listReadResult.Items[0];
-  anItemInThisList.read(function(err, listItem){
-
-  });
-});
-```
-
-### ListItem Delete
-To delete a ListItem, we can use the del() function.
-
-```javascript
-sharepoint.listItems.del('list Name', 'someListItemId', function(err){
-
-});
-```
-Of course, we can also just call .del() on a listItem, after we read it's containing list.
-
-```javascript
-sharepoint.lists.read('list Name', function(err, listReadResult){
-  var anItemInThisList = listReadResult.Items[0];
-  anItemInThisList.delete(function(err){
-
-  });
-});
-```
-
-# Why another Sharepoint Client?
-Yet another SharePoint Client. This one:
-- Has test coverage
-- Isn't written in CofeeScript
-- Supports multiple authentication schemas - currently:
-  - NTLM
-  - Basic
-  - Online (Sharepoint 365/Online login flow)
-  - Online with SAML SSO (Sharepoint 365 to Federated SAML SSO flow)
-
-- Accepts pull requests :-)
-
-# Tests
-Tests are written in Mocha. Unit tests simply require the integration tests, and `nock` the API they integrate with - thus reducing the amount of test code we need to write.
-
-## Running Unit tests
-This includes jshint, and the mocha unit test suite.
-
-```
-# install grunt globally
-npm install grunt-cli -g
-#run the tests
+# Run linting checks
 grunt test
 ```
 
-## Running Integration Tests
+2. **Using the Library in Your Project**:
+```javascript
+// In your Node.js application
+const sharepoint = require('sharepointconnector');
 
+// Configure your SharePoint connection
+const sp = sharepoint({
+  username: process.env.SP_USERNAME,
+  password: process.env.SP_PASSWORD,
+  type: process.env.SP_AUTH_TYPE || 'ntlm',
+  url: process.env.SP_HOST
+});
+
+// Use the connector
+sp.login((err) => {
+  if (err) throw err;
+  console.log('Connected to SharePoint!');
+});
 ```
-#Setup environment variables with your SP creds:
+
+### Environment Variables
+
+For security, it's recommended to use environment variables for sensitive information:
+
+```bash
+# Create a .env file or export these variables
+export SP_USERNAME=your_sharepoint_username
+export SP_PASSWORD=your_sharepoint_password
+export SP_HOST=https://your-sharepoint-site.com
+export SP_AUTH_TYPE=ntlm  # or basic, online, onlinesaml
+```
+
+### Production Deployment
+
+1. **Install production dependencies only**:
+```bash
+npm install --production
+```
+
+2. **Use PM2 for process management** (optional):
+```bash
+npm install -g pm2
+pm2 start your-app.js
+```
+
+## Testing
+
+This project includes comprehensive unit and integration tests using Mocha.
+
+### Running Unit Tests
+
+Unit tests use mocked API responses and don't require actual SharePoint credentials:
+
+```bash
+# Run linting and unit tests
+grunt test
+
+# Run only JSHint linting
+grunt jshint
+```
+
+### Running Integration Tests
+
+Integration tests require actual SharePoint credentials and will make real API calls:
+
+1. **Set up environment variables** with your SharePoint credentials:
+```bash
 export SP_USERNAME=YOUR_USERNAME
 export SP_PASSWORD=YOUR_PASSWORD
 export SP_HOST=https://your_sp_hostname.com
-export SP_AUTH_TYPE=(ntlm|basic|online|onlinesaml)
-#Then run the tests:
+export SP_AUTH_TYPE=ntlm  # Options: ntlm, basic, online, onlinesaml
+```
+
+2. **Run integration tests**:
+```bash
 grunt integration
 ```
+
+### Test Structure
+
+- **Unit Tests** (`test/unit/`): Mock-based tests that don't require SharePoint connection
+  - `test-list-create-delete.js` - Tests for list creation and deletion
+  - `test-list-get.js` - Tests for list retrieval operations
+  - `test-list-items.js` - Tests for list item operations
+
+- **Integration Tests** (`test/integration/`): Real API tests requiring SharePoint credentials
+  - `test-list-create-delete.js` - Integration tests for list CRUD operations
+  - `test-list-get.js` - Integration tests for list retrieval
+  - `test-list-items.js` - Integration tests for list item operations
+
+### Test Fixtures
+
+Test fixtures are located in `test/fixtures/` and provide mock data for unit tests:
+- `apis.js` - Mock API responses
+- `context.js` - Test context setup
+- `list.js` - Mock list data
+- `listfields.js` - Mock list field definitions
+- `listitem.js` - Mock list item data
+- `listitemfile.js` - Mock file attachment data
+- `listitems.js` - Mock list items collection
+
+### Running Specific Tests
+
+```bash
+# Run a specific test file
+./node_modules/mocha/bin/mocha test/unit/test-list-get.js
+
+# Run tests with verbose output
+./node_modules/mocha/bin/mocha --reporter spec test/unit/
+
+# Run tests with timeout (useful for integration tests)
+./node_modules/mocha/bin/mocha -t 25000 test/integration/
+```
+
+## Usage Examples
+
+### Authentication Types
+
+The connector supports multiple authentication methods:
+
+```javascript
+// NTLM Authentication (most common for on-premise SharePoint)
+var sharepoint = require('sharepointconnector')({
+  username: 'domain\\username',
+  password: 'password',
+  type: 'ntlm',
+  url: 'https://sharepoint.company.com'
+});
+
+// Basic Authentication
+var sharepoint = require('sharepointconnector')({
+  username: 'username',
+  password: 'password',
+  type: 'basic',
+  url: 'https://sharepoint.company.com'
+});
+
+// SharePoint Online (Office 365)
+var sharepoint = require('sharepointconnector')({
+  username: 'user@company.onmicrosoft.com',
+  password: 'password',
+  type: 'online',
+  url: 'https://company.sharepoint.com'
+});
+
+// SharePoint Online with SAML SSO
+var sharepoint = require('sharepointconnector')({
+  username: 'user@company.com',
+  password: 'password',
+  type: 'onlinesaml',
+  url: 'https://company.sharepoint.com',
+  federatedAuthUrl: 'https://adfs.company.com/adfs/ls/'
+});
+```
+
+### Configuration Parameters
+
+```javascript
+var sharepoint = require('sharepointconnector')({
+  username: 'someusername',
+  password: 'somepassword',
+  type: 'ntlm', // Authentication type: ntlm, basic, online, onlinesaml
+  url: 'https://SharepointHostname.com',
+  
+  // Optional parameters:
+  context: 'myCustomerSite', // Set to create resources outside of the base site context
+  verbose: false, // Set to true to stop filtering responses, return everything
+  proxy: undefined, // Set to string hostname of proxy if running through one
+  strictSSL: true, // Set to false if connecting to SP instance with self-signed cert
+  federatedAuthUrl: 'http://mysamlloginservice.com', // Only for 'onlinesaml' auth type
+  rtFa: '<token>', // Optional parameter to set rtFa token value
+  FedAuth: '<token>' // Optional parameter to set FedAuth token value
+});
+```
+
+### Working with Lists
+
+```javascript
+// List all SharePoint lists
+sharepoint.lists.list(function(err, lists, nextUrl) {
+  if (err) throw err;
+  
+  console.log('Found', lists.length, 'lists');
+  lists.forEach(list => {
+    console.log('- ' + list.Title + ' (ID: ' + list.Id + ')');
+  });
+});
+
+// Create a new list
+sharepoint.lists.create({
+  title: 'My New List',
+  description: 'A list created via the API'
+}, function(err, newList) {
+  if (err) throw err;
+  console.log('Created list:', newList.Title);
+});
+
+// Read a specific list with its items and fields
+sharepoint.lists.read('MyListName', function(err, list) {
+  if (err) throw err;
+  
+  console.log('List:', list.Title);
+  console.log('Items count:', list.Items.length);
+  console.log('Fields count:', list.Fields.length);
+});
+
+// Update a list
+sharepoint.lists.update('ListId', { Title: 'Updated List Name' }, function(err, result) {
+  if (err) throw err;
+  console.log('List updated successfully');
+});
+
+// Delete a list
+sharepoint.lists.del('ListId', function(err) {
+  if (err) throw err;
+  console.log('List deleted successfully');
+});
+```
+
+### Working with List Items
+
+```javascript
+// Get all items from a list
+sharepoint.listItems.list('MyListName', function(err, items, nextUrl) {
+  if (err) throw err;
+  
+  console.log('Found', items.length, 'items');
+  items.forEach(item => {
+    console.log('- ' + item.Title);
+  });
+});
+
+// Get ALL items (handles pagination automatically)
+sharepoint.listItems.listAll('MyListName', function(err, allItems) {
+  if (err) throw err;
+  console.log('Total items:', allItems.length);
+});
+
+// Create a new list item
+sharepoint.listItems.create('MyListName', {
+  Title: 'New Item',
+  Description: 'Created via API'
+}, function(err, newItem) {
+  if (err) throw err;
+  console.log('Created item:', newItem.Title);
+});
+
+// Read a specific list item
+sharepoint.listItems.read('MyListName', 'itemId', function(err, item) {
+  if (err) throw err;
+  console.log('Item:', item.Title);
+});
+
+// Delete a list item
+sharepoint.listItems.del('MyListName', 'itemId', function(err) {
+  if (err) throw err;
+  console.log('Item deleted successfully');
+});
+```
+
+### Advanced Filtering and Selection
+
+```javascript
+// Filter items based on field values
+sharepoint.listItems.list('MyListName', {
+  filterFields: [
+    { field: 'Status', value: 'Active' },
+    { field: 'Category', value: 'Important' }
+  ],
+  orOperator: false // Use AND logic (default)
+}, function(err, filteredItems) {
+  if (err) throw err;
+  console.log('Filtered items:', filteredItems.length);
+});
+
+// Select specific fields only
+sharepoint.listItems.list('MyListName', {
+  selectFields: ['Title', 'Created', 'Author'],
+  fieldValuesAsText: true
+}, function(err, items) {
+  if (err) throw err;
+  console.log('Items with selected fields:', items);
+});
+
+// Expand lookup fields
+sharepoint.listItems.list('MyListName', {
+  expandFields: ['Author', 'Category'],
+  selectFields: ['Title', 'Author/Title', 'Category/Name']
+}, function(err, items) {
+  if (err) throw err;
+  console.log('Items with expanded fields:', items);
+});
+
+// Limit results
+sharepoint.listItems.list('MyListName', {
+  $top: "100" // Limit to 100 items
+}, function(err, items) {
+  if (err) throw err;
+  console.log('Limited items:', items.length);
+});
+```
+
+### Working with Files
+
+```javascript
+// Get binary stream for a file
+sharepoint.listItems.byteStream('Documents', 'myfile.pdf', function(err, serviceReqObj) {
+  if (err) throw err;
+  
+  // Pipe the file content to response (in Express.js)
+  require('request').get(serviceReqObj).on('response', function(response) {
+    response.pipe(res);
+  });
+});
+
+// Get binary stream by file path
+sharepoint.listItems.byteStreamByFilePath('/sites/mysite/Documents/myfile.pdf', function(err, serviceReqObj) {
+  if (err) throw err;
+  
+  require('request').get(serviceReqObj).on('response', function(response) {
+    response.pipe(res);
+  });
+});
+```
+
+### User Information
+
+```javascript
+// Get current logged-in user details
+sharepoint.listItems.currentuser("MyListName", function(err, userInfo) {
+  if (err) throw err;
+  
+  console.log('Current user:', userInfo.Title);
+  console.log('Email:', userInfo.Email);
+});
+```
+
+## API Documentation
+
+### Lists
+
+#### `sharepoint.lists.list(callback)`
+- **Description**: Retrieves all lists in the SharePoint site
+- **Parameters**: `callback(err, lists, nextUrl)`
+- **Returns**: Array of list objects
+
+#### `sharepoint.lists.create(listData, callback)`
+- **Description**: Creates a new list
+- **Parameters**: 
+  - `listData`: Object with `title` and `description`
+  - `callback(err, newList)`
+
+#### `sharepoint.lists.read(listId, callback)`
+- **Description**: Reads a specific list with its items and fields
+- **Parameters**:
+  - `listId`: List ID or name
+  - `callback(err, listData)`
+
+#### `sharepoint.lists.update(listId, updateData, callback)`
+- **Description**: Updates a list
+- **Parameters**:
+  - `listId`: List ID
+  - `updateData`: Object with fields to update
+  - `callback(err, result)`
+
+#### `sharepoint.lists.del(listId, callback)`
+- **Description**: Deletes a list
+- **Parameters**:
+  - `listId`: List ID
+  - `callback(err)`
+
+### List Items
+
+#### `sharepoint.listItems.list(listName, [options], callback)`
+- **Description**: Retrieves items from a list
+- **Parameters**:
+  - `listName`: Name of the list
+  - `options`: Optional filtering/selection options
+  - `callback(err, items, nextUrl)`
+
+#### `sharepoint.listItems.listAll(listName, [options], callback)`
+- **Description**: Retrieves ALL items from a list (handles pagination)
+- **Parameters**:
+  - `listName`: Name of the list
+  - `options`: Optional filtering/selection options
+  - `callback(err, allItems)`
+
+#### `sharepoint.listItems.create(listName, itemData, callback)`
+- **Description**: Creates a new list item
+- **Parameters**:
+  - `listName`: Name of the list
+  - `itemData`: Object with item field values
+  - `callback(err, newItem)`
+
+#### `sharepoint.listItems.read(listName, itemId, callback)`
+- **Description**: Reads a specific list item
+- **Parameters**:
+  - `listName`: Name of the list
+  - `itemId`: Item ID
+  - `callback(err, item)`
+
+#### `sharepoint.listItems.del(listName, itemId, callback)`
+- **Description**: Deletes a list item
+- **Parameters**:
+  - `listName`: Name of the list
+  - `itemId`: Item ID
+  - `callback(err)`
+
+## Authentication Types
+
+### NTLM (Windows Authentication)
+Best for on-premise SharePoint installations with Windows domain authentication.
+
+```javascript
+{
+  type: 'ntlm',
+  username: 'domain\\username', // or 'username@domain.com'
+  password: 'password'
+}
+```
+
+### Basic Authentication
+Simple username/password authentication.
+
+```javascript
+{
+  type: 'basic',
+  username: 'username',
+  password: 'password'
+}
+```
+
+### SharePoint Online (Office 365)
+For SharePoint Online/Office 365 sites.
+
+```javascript
+{
+  type: 'online',
+  username: 'user@tenant.onmicrosoft.com',
+  password: 'password'
+}
+```
+
+### SharePoint Online with SAML SSO
+For SharePoint Online with federated SAML authentication.
+
+```javascript
+{
+  type: 'onlinesaml',
+  username: 'user@company.com',
+  password: 'password',
+  federatedAuthUrl: 'https://adfs.company.com/adfs/ls/'
+}
+```
+
+## Why Another SharePoint Client?
+
+This SharePoint client offers several advantages:
+
+- ✅ **Comprehensive test coverage** with both unit and integration tests
+- ✅ **Written in JavaScript** (not CoffeeScript)
+- ✅ **Multiple authentication schemas** support:
+  - NTLM (Windows Authentication)
+  - Basic Authentication
+  - SharePoint Online (Office 365)
+  - SAML SSO for federated authentication
+- ✅ **Active maintenance** and accepts pull requests
+- ✅ **Convenient API** that combines related operations
+- ✅ **Pagination support** for large datasets
+- ✅ **File handling** capabilities
+- ✅ **Flexible filtering and field selection**
+
+## Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes and add tests
+4. Run the test suite: `grunt test`
+5. Commit your changes: `git commit -am 'Add feature'`
+6. Push to the branch: `git push origin feature-name`
+7. Submit a pull request
+
+### Development Setup
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Install Grunt CLI: `npm install -g grunt-cli`
+4. Run tests: `grunt test`
+5. Set up integration test environment variables for testing
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Authentication Failures**
+   - Verify credentials are correct
+   - Check if the authentication type matches your SharePoint setup
+   - For NTLM, try both `domain\\username` and `username@domain.com` formats
+
+2. **SSL Certificate Issues**
+   - Set `strictSSL: false` for self-signed certificates
+   - Consider using a proper SSL certificate in production
+
+3. **Timeout Issues**
+   - Increase timeout values in your HTTP client
+   - Check network connectivity to SharePoint server
+
+4. **Permission Errors**
+   - Verify the user account has necessary permissions
+   - Check SharePoint site permissions and list-level permissions
+
+### Getting Help
+
+- Check the [Issues](https://github.com/veeraRaghavSanthosh/sharepointConnector/issues) page
+- Review the test files for usage examples
+- Ensure your SharePoint version is supported
+
+## A SharePoint Primer
+
+Skip this if you already know enough about SharePoint. Here are the basics:
+
+- **SharePoint Products**:
+  - SharePoint 2013/2016/2019 - On-premise versions
+  - SharePoint Online (Office 365) - Cloud-hosted version
+
+- **Everything is a List** in SharePoint:
+  - Document Library? A list
+  - Tasks app? A list  
+  - Discussion Board? A list
+  - Site Pages? A list
+  
+SharePoint reuses the base type `List` for most content types, which is why this connector focuses heavily on list operations.
