@@ -33,10 +33,23 @@ module.exports = function(grunt) {
         "indent"        : 2
       },
       all: ['index.js', 'lib/**/*.js', 'test/**/**/*.js']
+    },
+    mochaTest: {
+      unit: {
+        options: {
+          reporter: 'spec',
+          timeout: 10000,
+          require: function() {
+            // Set environment variables for unit tests
+            process.env.SP_USERNAME = process.env.SP_USERNAME || 'testuser';
+            process.env.SP_PASSWORD = process.env.SP_PASSWORD || 'testpass';
+            process.env.SP_AUTH_TYPE = process.env.SP_AUTH_TYPE || 'basic';
+            process.env.SP_HOST = process.env.SP_HOST || 'https://test.sharepoint.com';
+          }
+        },
+        src: ['test/unit/**/*.js']
+      }
     }
-    // ,
-    // unit: ['export SP_USERNAME="foo"; export SP_PASSWORD="foo"; export SP_AUTH_TYPE="basic"; export SP_HOST="https://www.example.com"', './node_modules/mocha/bin/mocha -A -u exports --recursive -t 10000 ./test/unit'],
-    // integrate : ['./node_modules/mocha/bin/mocha -A -u exports --recursive -t 25000 ./test/integration ']
   });
 
   //grunt.loadNpmTasks('grunt-fh-build');
