@@ -1,33 +1,95 @@
 [![Build Status](https://travis-ci.org/veeraRaghavSanthosh/sharepointConnector.svg)](https://travis-ci.org/veeraRaghavSanthosh/sharepointConnector)
 [![bitHound Score](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector/badges/score.svg)](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector)
 
+# SharePoint Connector
 
-A Node.js SharePoint Client inherited from sharepointer (by cian clarke) .
+A comprehensive Node.js SharePoint Client library inherited from sharepointer (by cian clarke). This library provides robust connectivity to SharePoint Online and on-premises SharePoint instances with support for multiple authentication strategies, file operations, list management, and advanced querying capabilities.
 
-# Usage Example
+## Features
+
+- **Multiple Authentication Methods**: NTLM, Basic, Online (SharePoint 365), and SAML SSO
+- **Complete CRUD Operations**: Create, Read, Update, Delete for SharePoint Lists and List Items
+- **File Operations**: Upload, download, and stream files from SharePoint Document Libraries
+- **Advanced Querying**: Support for $filter, $select, $expand, $top with AND/OR operators
+- **Pagination Support**: Handle large datasets with built-in pagination
+- **Concurrent User Support**: Multiple users can authenticate simultaneously
+- **Proxy Support**: Works behind corporate proxies
+- **Comprehensive Test Coverage**: Unit and integration tests included
+
+## Prerequisites
+
+- Node.js 8.x or higher
+- npm or yarn package manager
+- Access to SharePoint Online or SharePoint Server
+- Valid SharePoint credentials
+
+## Installation
+
+### Method 1: Install from npm
+
+```bash
+npm install sharepointconnector
+```
+
+### Method 2: Install from source
+
+```bash
+# Clone the repository
+git clone https://github.com/veeraRaghavSanthosh/sharepointConnector.git
+cd sharepointConnector
+
+# Install dependencies
+npm install
+```
+
+## Quick Start
+
+### Basic Usage
 
 ```javascript
-var sharepoint = require('sharepointconnector')({
-  username : 'someusername',
-  password : 'somepassword',
-  // Authentication type - current valid values: ntlm, basic, online,onlinesaml
-  type : 'ntlm',
-  url : 'https://sharepointHostname.com'
+const sharepoint = require('sharepointconnector')({
+  username: 'your-username@domain.com',
+  password: 'your-password',
+  // Authentication type - valid values: ntlm, basic, online, onlinesaml
+  type: 'online', // Use 'online' for SharePoint 365
+  url: 'https://yourtenant.sharepoint.com'
 });
-sharepoint.login(function(err){
-  if (err){
-    return console.error(err);
+
+// Connect to SharePoint
+sharepoint.login(function(err) {
+  if (err) {
+    return console.error('Login failed:', err);
   }
-  // Once logged in, we can list the "lists" within sharepoint
-  sharepoint.lists.list(function(err, listRes){
-      var aList = listRes[0];
-    // We can pick a particular list, and read it. This also gives us the list's Items[] and Fields[]
-    sharepoint.lists.read(aList.Id, function(err, listRead){
-      console.log(singleResult);
+  console.log('Successfully connected to SharePoint!');
+  
+  // List all SharePoint lists
+  sharepoint.lists.list(function(err, lists) {
+    if (err) {
+      return console.error('Error listing lists:', err);
+    }
+    
+    console.log(`Found ${lists.length} lists:`);
+    lists.forEach(list => {
+      console.log(`- ${list.Title} (ID: ${list.Id})`);
     });
+    
+    // Read a specific list with its items and fields
+    if (lists.length > 0) {
+      const firstList = lists[0];
+      sharepoint.lists.read(firstList.Id, function(err, listDetails) {
+        if (err) {
+          return console.error('Error reading list:', err);
+        }
+        
+        console.log(`List "${listDetails.Title}" contains ${listDetails.Items.length} items`);
+        console.log(`Available fields: ${listDetails.Fields.map(f => f.Title).join(', ')}`);
+      });
+    }
   });
 });
 ```
+
+## Configuration Options
 
 ## Parameters
 When initialising Sharepoint, there are a number of optional params which can be specified at init. Here are their defaults & descriptions
@@ -50,7 +112,63 @@ var sharepoint = require('sharepointconnector')({
 });
 ```
 
-## Additional Parameters for listing and reading Lists and ListItems
+### Configuration Parameters
+
+When initializing SharePoint Connector, you can specify the following configuration options:
+
+```javascript
+const sharepoint = require('sharepointconnector')({
+  // Required parameters
+  username: 'your-username@domain.com',    // SharePoint username
+  password: 'your-password',               // SharePoint password
+  type: 'online',                          // Authentication type
+  url: 'https://yourtenant.sharepoint.com', // SharePoint site URL
+  
+  // Optional parameters
+  context: 'sites/mysite',                 // Site context (default: 'web')
+  verbose: false,                          // Return full API responses (default: false)
+  proxy: undefined,                        // Proxy server hostname
+  strictSSL: true,                         // SSL certificate validation (default: true)
+  federatedAuthUrl: 'https://sso.company.com', // SAML SSO URL (for 'onlinesaml' type)
+  rtFa: '<token>',                         // Optional rtFa token
+  FedAuth: '<token>'                       // Optional FedAuth token
+});
+```
+
+#### Authentication Types
+
+- **`ntlm`**: For on-premises SharePoint with NTLM authentication
+- **`basic`**: For basic HTTP authentication
+- **`online`**: For SharePoint Online/365 (most common)
+- **`onlinesaml`**: For SharePoint Online with SAML SSO federation
+
+#### Environment Variables Setup
+
+For security, consider using environment variables:
+
+```javascript
+// Install dotenv: npm install dotenv
+require('dotenv').config();
+
+const sharepoint = require('sharepointconnector')({
+  username: process.env.SP_USERNAME,
+  password: process.env.SP_PASSWORD,
+  type: process.env.SP_AUTH_TYPE || 'online',
+  url: process.env.SP_URL
+});
+```
+
+Example `.env` file:
+```
+SP_USERNAME=your-username@domain.com
+SP_PASSWORD=your-password
+SP_AUTH_TYPE=online
+SP_URL=https://yourtenant.sharepoint.com
+```
+
+## Advanced Configuration
+
+### Additional Parameters for listing and reading Lists and ListItems
 
 ```javascript
   fieldValuesAsText : true, //Return Lookup Field Values as Text for Items
@@ -277,27 +395,198 @@ Yet another SharePoint Client. This one:
 
 - Accepts pull requests :-)
 
-# Tests
-Tests are written in Mocha. Unit tests simply require the integration tests, and `nock` the API they integrate with - thus reducing the amount of test code we need to write.
+# Development and Testing
 
-## Running Unit tests
-This includes jshint, and the mocha unit test suite.
+## Project Structure
 
 ```
-# install grunt globally
-npm install grunt-cli -g
-#run the tests
+sharepointConnector/
+├── lib/                          # Core library files
+│   ├── auth/                     # Authentication modules
+│   │   ├── basic.js             # Basic authentication
+│   │   ├── ntlm.js              # NTLM authentication
+│   │   ├── online.js            # SharePoint Online authentication
+│   │   └── onlinesaml.js        # SAML SSO authentication
+│   ├── objects/                  # SharePoint object handlers
+│   │   ├── lists.js             # List operations
+│   │   └── listItems.js         # List item operations
+│   ├── util/                     # Utility functions
+│   └── client.js                # Main client
+├── test/                         # Test suites
+│   ├── fixtures/                # Test data and mocks
+│   ├── integration/             # Integration tests
+│   └── unit/                    # Unit tests
+├── package.json                 # Project configuration
+├── Gruntfile.js                 # Build configuration
+└── sharepointconnector.js       # Main entry point
+```
+
+## Running the Application
+
+### Development Mode
+
+```bash
+# Clone and install dependencies (if installing from source)
+git clone https://github.com/veeraRaghavSanthosh/sharepointConnector.git
+cd sharepointConnector
+npm install
+
+# Create a test script (example: test-connection.js)
+node test-connection.js
+```
+
+Example test script (`test-connection.js`):
+
+```javascript
+const sharepoint = require('./sharepointconnector')({
+  username: process.env.SP_USERNAME || 'your-username@domain.com',
+  password: process.env.SP_PASSWORD || 'your-password',
+  type: process.env.SP_AUTH_TYPE || 'online',
+  url: process.env.SP_URL || 'https://yourtenant.sharepoint.com'
+});
+
+sharepoint.login(function(err) {
+  if (err) {
+    console.error('Connection failed:', err);
+    process.exit(1);
+  }
+  
+  console.log('✅ Successfully connected to SharePoint!');
+  
+  sharepoint.lists.list(function(err, lists) {
+    if (err) {
+      console.error('Error listing lists:', err);
+      return;
+    }
+    
+    console.log(`📋 Found ${lists.length} lists in SharePoint`);
+    process.exit(0);
+  });
+});
+```
+
+## Testing
+
+The project includes comprehensive test coverage with both unit and integration tests using Mocha and Nock for API mocking.
+
+### Prerequisites for Testing
+
+```bash
+# Install Grunt CLI globally (if not already installed)
+npm install -g grunt-cli
+
+# Install project dependencies
+npm install
+```
+
+### Running Unit Tests
+
+Unit tests use mocked SharePoint API responses and don't require actual SharePoint credentials:
+
+```bash
+# Run unit tests with linting
 grunt test
+
+# Alternative: Run tests directly with npm
+npm test
+
+# Run only linting (JSHint)
+grunt jshint
 ```
 
-## Running Integration Tests
+### Running Integration Tests
 
-```
-#Setup environment variables with your SP creds:
-export SP_USERNAME=YOUR_USERNAME
-export SP_PASSWORD=YOUR_PASSWORD
-export SP_HOST=https://your_sp_hostname.com
-export SP_AUTH_TYPE=(ntlm|basic|online|onlinesaml)
-#Then run the tests:
+Integration tests require actual SharePoint credentials and will make real API calls:
+
+```bash
+# Set up environment variables with your SharePoint credentials
+export SP_USERNAME=your-username@domain.com
+export SP_PASSWORD=your-password
+export SP_HOST=https://yourtenant.sharepoint.com
+export SP_AUTH_TYPE=online
+
+# Run integration tests
 grunt integration
 ```
+
+#### Windows Users (PowerShell)
+
+```powershell
+# Set environment variables
+$env:SP_USERNAME="your-username@domain.com"
+$env:SP_PASSWORD="your-password"
+$env:SP_HOST="https://yourtenant.sharepoint.com"
+$env:SP_AUTH_TYPE="online"
+
+# Run integration tests
+grunt integration
+```
+
+#### Windows Users (Command Prompt)
+
+```cmd
+set SP_USERNAME=your-username@domain.com
+set SP_PASSWORD=your-password
+set SP_HOST=https://yourtenant.sharepoint.com
+set SP_AUTH_TYPE=online
+
+grunt integration
+```
+
+### Test Structure
+
+- **Unit Tests** (`test/unit/`): Fast tests with mocked API responses
+  - `test-list-create-delete.js`: Tests list creation and deletion
+  - `test-list-get.js`: Tests list retrieval operations
+  - `test-list-items.js`: Tests list item operations
+
+- **Integration Tests** (`test/integration/`): Real API tests requiring credentials
+  - `test-list-create-delete.js`: End-to-end list management
+  - `test-list-get.js`: Real SharePoint list retrieval
+  - `test-list-items.js`: Real list item operations
+
+- **Fixtures** (`test/fixtures/`): Mock data and API responses
+  - Contains sample SharePoint API responses for unit testing
+
+### Available Grunt Tasks
+
+```bash
+# Run all unit tests with linting
+grunt test
+
+# Run only integration tests
+grunt integration
+
+# Run only linting
+grunt jshint
+
+# Get list of all available tasks
+grunt --help
+```
+
+### Continuous Integration
+
+The project uses Travis CI for automated testing. The `.travis.yml` configuration runs unit tests on multiple Node.js versions.
+
+## Troubleshooting Tests
+
+### Common Issues
+
+1. **Integration test failures**:
+   - Verify SharePoint credentials are correct
+   - Ensure network connectivity to SharePoint
+   - Check if your account has proper permissions
+
+2. **Authentication errors**:
+   - For SharePoint Online, ensure you're using the correct authentication type (`online`)
+   - For SAML SSO, verify the `federatedAuthUrl` is correct
+   - Check if multi-factor authentication is enabled (may require app-specific passwords)
+
+3. **Network/Proxy issues**:
+   - Configure proxy settings in the SharePoint connector initialization
+   - Set `strictSSL: false` for self-signed certificates (development only)
+
+4. **Permission errors**:
+   - Ensure your SharePoint account has sufficient permissions
+   - For list operations, you need at least "Contribute" permissions
+   - For site-level operations, you may need "Site Collection Administrator" rights
