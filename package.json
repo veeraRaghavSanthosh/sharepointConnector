@@ -8,13 +8,22 @@
   },
   "main": "sharepointconnector.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "lint": "grunt jshint",
+    "lint:fix": "jshint --fix .",
+    "pretest": "npm run lint",
+    "ci": "npm run lint && npm test",
+    "validate": "npm ls"
   },
   "author": "veera raghava santhosh kumar reddy<sanra46@gmail.com>",
   "keywords": [
     "sharepoint","sharepointconnector","sharepoint npm","SharePoint NPM", "Node.js wrapper for O365 REST API","O365"
   ],
   "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
   "dependencies": {
     "agentkeepalive": ">=1.2.0",
     "async": "^0.2.9",
