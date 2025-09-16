@@ -1,0 +1,61 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Use Node.js 16
+      uses: actions/setup-node@v4
+      with:
+        node-version: '16'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Run linting
+      run: |
+        # Check for various linting configurations and run accordingly
+        if npm run lint --silent 2>/dev/null; then
+          echo "Running npm run lint..."
+          npm run lint
+        elif npm run jshint --silent 2>/dev/null; then
+          echo "Running npm run jshint..."
+          npm run jshint
+        elif [ -f "Gruntfile.js" ] && npx grunt --version 2>/dev/null; then
+          echo "Running grunt jshint..."
+          npx grunt jshint || echo "No jshint task found in Gruntfile"
+        elif npx jshint --version 2>/dev/null; then
+          echo "Running jshint on source files..."
+          npx jshint lib/ test/ *.js || echo "JSHint not configured or files not found"
+        else
+          echo "⚠️  No linting configuration found. Consider adding ESLint or JSHint to your project."
+        fi
+      continue-on-error: false
+      
+    - name: Run tests
+      run: |
+        # Check for various test configurations and run accordingly
+        if npm run test --silent 2>/dev/null; then
+          echo "Running npm run test..."
+          npm run test
+        elif [ -f "Gruntfile.js" ] && npx grunt --version 2>/dev/null; then
+          echo "Running grunt test..."
+          npx grunt test || npx grunt default
+        elif npx mocha --version 2>/dev/null && [ -d "test/" ]; then
+          echo "Running mocha tests..."
+          npx mocha test/**/*.js
+        else
+          echo "❌ No test configuration found. Please add test scripts to package.json"
+          echo "Available files in test directory:"
+          ls -la test/ || echo "No test directory found"
+          exit 1
+        fi

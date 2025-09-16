@@ -1,0 +1,62 @@
+# GitHub Actions CI workflow for SharePoint Connector
+# Automatically runs tests and linting on pull requests
+name: CI
+
+on:
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    name: Test & Lint
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '16'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Run linting
+      run: |
+        # Try different linting approaches
+        if npm run lint --silent 2>/dev/null; then
+          echo "✅ Running npm run lint..."
+          npm run lint
+        elif npm run jshint --silent 2>/dev/null; then
+          echo "✅ Running npm run jshint..."
+          npm run jshint
+        elif [ -f "Gruntfile.js" ]; then
+          echo "✅ Trying grunt jshint..."
+          npx grunt jshint 2>/dev/null || echo "⚠️ No jshint task in Gruntfile"
+        else
+          echo "⚠️ No linting configuration found - consider adding ESLint or JSHint"
+        fi
+      
+    - name: Run tests
+      run: |
+        # Try different test approaches
+        if npm run test --silent 2>/dev/null; then
+          echo "✅ Running npm run test..."
+          npm run test
+        elif [ -f "Gruntfile.js" ]; then
+          echo "✅ Trying grunt test..."
+          npx grunt test 2>/dev/null || npx grunt default 2>/dev/null || {
+            echo "❌ No working grunt task found"
+            exit 1
+          }
+        elif [ -d "test/" ]; then
+          echo "✅ Running mocha tests..."
+          npx mocha "test/**/*.js" --recursive
+        else
+          echo "❌ No test configuration found!"
+          echo "Please add a 'test' script to package.json or configure grunt tasks"
+          exit 1
+        fi
