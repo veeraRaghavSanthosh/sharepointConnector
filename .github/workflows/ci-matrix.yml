@@ -1,0 +1,60 @@
+name: Comprehensive CI Matrix
+
+# Trigger on push to main branches and pull requests
+on:
+  push:
+    branches: [ master, main, develop ]
+  pull_request:
+    branches: [ master, main, develop ]
+
+jobs:
+  test-matrix:
+    name: Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [4.x, 8.x, 10.x, 12.x, 14.x, 16.x, 18.x, 20.x]
+        # Exclude some combinations to reduce CI load while maintaining coverage
+        exclude:
+          # Skip older Node versions on Windows/macOS for faster CI
+          - os: windows-latest
+            node-version: 4.x
+          - os: windows-latest
+            node-version: 8.x
+          - os: macos-latest
+            node-version: 4.x
+          - os: macos-latest
+            node-version: 8.x
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install Grunt CLI globally
+      run: npm install -g grunt-cli
+    
+    - name: Install dependencies
+      run: npm install --force
+    
+    - name: Run tests and linting
+      run: npm test
+    
+    - name: Upload test results (if available)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-${{ matrix.os }}-${{ matrix.node-version }}
+        path: |
+          test-results.xml
+          coverage/
+        retention-days: 7
+      continue-on-error: true

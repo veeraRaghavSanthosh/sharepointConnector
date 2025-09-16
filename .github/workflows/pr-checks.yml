@@ -1,0 +1,114 @@
+name: Pull Request Checks
+
+# Trigger on pull requests to any branch
+on:
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  test-and-lint:
+    name: Test and Lint
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        # Test on multiple Node.js versions for better compatibility
+        # Including the original 0.12 equivalent (using 4.x as closest supported)
+        # and modern LTS versions
+        node-version: [4.x, 8.x, 10.x, 12.x, 14.x, 16.x, 18.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install Grunt CLI globally
+      run: npm install -g grunt-cli
+    
+    - name: Install dependencies
+      # Using --force to maintain compatibility with original setup
+      run: npm install --force
+    
+    - name: Run linting and tests
+      # Using the existing grunt test command to maintain compatibility
+      run: npm test
+    
+    - name: Run unit tests with Mocha directly (additional check)
+      # Adding direct mocha execution as a backup test method
+      run: |
+        if [ -d "test/unit" ]; then
+          ./node_modules/.bin/mocha test/unit/*.js --recursive --timeout 10000 || echo "Direct mocha tests failed or not configured"
+        fi
+      continue-on-error: true
+
+  # Separate job for modern linting standards (optional enhancement)
+  modern-lint:
+    name: Modern Linting (Advisory)
+    runs-on: ubuntu-latest
+    continue-on-error: true # Don't fail the PR if this fails
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm install --force
+    
+    - name: Install ESLint (if not present)
+      run: |
+        if ! npm list eslint > /dev/null 2>&1; then
+          npm install --no-save eslint@latest
+        fi
+      continue-on-error: true
+    
+    - name: Run ESLint (advisory)
+      run: |
+        if command -v npx > /dev/null && npm list eslint > /dev/null 2>&1; then
+          npx eslint lib/ --ext .js --format compact || echo "ESLint found issues (advisory only)"
+        else
+          echo "ESLint not available, skipping modern linting"
+        fi
+      continue-on-error: true
+
+  # Job to ensure backward compatibility
+  compatibility-check:
+    name: Backward Compatibility Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js (Original Target)
+      uses: actions/setup-node@v4
+      with:
+        # Using Node 4.x as the closest supported version to original 0.12
+        node-version: '4.x'
+        cache: 'npm'
+    
+    - name: Install Grunt CLI globally
+      run: npm install -g grunt-cli
+    
+    - name: Install dependencies
+      run: npm install --force
+    
+    - name: Verify Grunt tasks work
+      run: |
+        grunt --version
+        grunt test
+    
+    - name: Check package.json scripts
+      run: |
+        echo "Verifying npm test command works..."
+        npm test

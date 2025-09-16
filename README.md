@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/veeraRaghavSanthosh/sharepointConnector.svg)](https://travis-ci.org/veeraRaghavSanthosh/sharepointConnector)
+[![GitHub Actions CI](https://github.com/veeraRaghavSanthosh/sharepointConnector/workflows/Pull%20Request%20Checks/badge.svg)](https://github.com/veeraRaghavSanthosh/sharepointConnector/actions)
 [![bitHound Score](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector/badges/score.svg)](https://www.bithound.io/github/veeraRaghavSanthosh/sharepointConnector)
 
 
@@ -279,6 +280,15 @@ Yet another SharePoint Client. This one:
 
 # Tests
 Tests are written in Mocha. Unit tests simply require the integration tests, and `nock` the API they integrate with - thus reducing the amount of test code we need to write.
+
+## Continuous Integration
+This project uses both Travis CI (for backward compatibility) and GitHub Actions for continuous integration:
+
+- **Travis CI**: Original CI setup testing on Node.js 0.12
+- **GitHub Actions**: Modern CI with matrix testing across multiple Node.js versions (4.x through 20.x) and operating systems
+- **Pull Request Checks**: Automatic testing and linting on all pull requests
+
+The CI runs the same test commands (`npm test` / `grunt test`) to ensure consistency.
 
 ## Running Unit tests
 This includes jshint, and the mocha unit test suite.
