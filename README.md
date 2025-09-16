@@ -50,6 +50,48 @@ var sharepoint = require('sharepointconnector')({
 });
 ```
 
+## Security Configuration (New in v1.1.7)
+
+SharePoint Connector now includes built-in security features to prevent abuse and protect against malicious inputs:
+
+```javascript
+var sharepoint = require('sharepointconnector')({
+  username: 'user',
+  password: 'pass',
+  url: 'https://example.sharepoint.com',
+  
+  // Security options (all optional with sensible defaults)
+  enableInputSanitization: true, // Enable input validation and sanitization (default: true)
+  enableRateLimiting: true,      // Enable rate limiting (default: true)
+  
+  // Rate limiting configuration
+  rateLimits: {
+    requestsPerSecond: 10,   // Max requests per second (default: 10)
+    requestsPerMinute: 100,  // Max requests per minute (default: 100) 
+    requestsPerHour: 1000    // Max requests per hour (default: 1000)
+  }
+});
+```
+
+### Security Features
+
+- **Input Sanitization**: Automatically validates and sanitizes all user inputs including:
+  - List IDs (GUID format validation)
+  - Item IDs (integer validation with range checking)
+  - Paths (prevents directory traversal attacks)
+  - Filter fields (length limits and content sanitization)
+  - HTML escaping to prevent XSS attacks
+
+- **Rate Limiting**: Prevents API abuse with configurable limits:
+  - Per-second, per-minute, and per-hour request limits
+  - Automatic request throttling when limits are exceeded
+  - Statistics and monitoring capabilities
+  - HTTP 429 status codes for rate-limited requests
+
+- **Error Handling**: Security violations return appropriate error messages:
+  - `RATE_LIMIT_EXCEEDED` with HTTP 429 for rate limiting
+  - `INPUT_VALIDATION_ERROR` with HTTP 400 for invalid inputs
+
 ## Additional Parameters for listing and reading Lists and ListItems
 
 ```javascript
