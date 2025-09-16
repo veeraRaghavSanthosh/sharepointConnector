@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ master, main ]
+  push:
+    branches: [ master, main ]
+
+jobs:
+  lint-and-test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x, 18.x, 20.x]
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install dependencies and tools
+      run: |
+        npm install --force
+        npm list grunt || npm install grunt --no-save
+        npm install -g grunt-cli
+        
+    - name: Run linting with JSHint
+      run: npm test
+        
+    - name: Run unit tests
+      run: |
+        if [ -d "test/unit" ] && [ "$(find test/unit -name '*.js' | wc -l)" -gt 0 ]; then
+          echo "Running unit tests..."
+          npx mocha -u exports --recursive test/unit --timeout 10000
+        else
+          echo "No unit tests found, skipping"
+        fi
+        
+    - name: Run integration tests (optional)
+      run: |
+        if [ -n "$SP_USERNAME" ] && [ -n "$SP_PASSWORD" ]; then
+          echo "Running integration tests..."
+          npx mocha -u exports --recursive test/integration --timeout 25000
+        else
+          echo "SharePoint credentials not set, skipping integration tests"
+        fi
+      continue-on-error: true
+      env:
+        SP_USERNAME: ${{ secrets.SP_USERNAME }}
+        SP_PASSWORD: ${{ secrets.SP_PASSWORD }}
+        SP_AUTH_TYPE: ${{ secrets.SP_AUTH_TYPE }}
+        SP_HOST: ${{ secrets.SP_HOST }}
+        SP_CONTEXT: ${{ secrets.SP_CONTEXT }}
+
+  compatibility-check:
+    name: Compatibility Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js 12.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '12.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        npm install --force
+        npm list grunt || npm install grunt --no-save
+        npm install -g grunt-cli
+        
+    - name: Run compatibility test
+      run: npm test
+      
+    - name: Test module loading
+      run: |
+        node -e "
+          try {
+            const sp = require('./sharepointconnector.js');
+            console.log('✓ Module loads successfully');
+          } catch (error) {
+            console.error('✗ Module loading failed:', error.message);
+            process.exit(1);
+          }
+        "
