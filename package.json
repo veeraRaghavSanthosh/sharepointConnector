@@ -8,7 +8,9 @@
   },
   "main": "sharepointconnector.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "migrate:legacy-id": "node scripts/run-legacy-id-migration.js",
+    "test:migration": "mocha test/migration/test-legacy-id-migration.js"
   },
   "author": "veera raghava santhosh kumar reddy<sanra46@gmail.com>",
   "keywords": [
