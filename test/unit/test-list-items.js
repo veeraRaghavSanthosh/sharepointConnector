@@ -1,9 +1,17 @@
-exports.test_list_items = require('../integration/test-list-items').test_list_items;
-var listApis = require('../fixtures/apis').list(),
-listItemsApis = require('../fixtures/apis').listitems();
+var setupHelpers = require('../../tests/setup.test'),
+intTest = require('../integration/test-list-items');
 
-exports.after = function(finish){
-  listApis.done();
-  listItemsApis.done();
-  return finish();
-};
+// Export the specific test function
+exports.test_list_items = intTest.test_list_items;
+
+// Use the refactored helper with multiple API instances
+var testModule = setupHelpers.createUnitTestModule(
+  intTest,
+  [
+    function() { return setupHelpers.createApiMock('list'); },
+    function() { return setupHelpers.createApiMock('listitems'); }
+  ]
+);
+
+// Apply the after hook to exports
+exports.after = testModule.after;

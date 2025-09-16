@@ -1,11 +1,8 @@
-var _ = require('underscore'),
-apis = require('../fixtures/apis').create(),
+var setupHelpers = require('../../tests/setup.test'),
 intTest = require('../integration/test-list-create-delete');
 
-module.exports = _.extend(intTest, {
-  after : function(finish){
-    apis.done();
-    return finish();
-    //return intTest.after();
-  }
-});
+// Use the refactored helper to create unit test module with proper cleanup
+module.exports = setupHelpers.createUnitTestModule(
+  intTest, 
+  function() { return setupHelpers.createApiMock('create'); }
+);
